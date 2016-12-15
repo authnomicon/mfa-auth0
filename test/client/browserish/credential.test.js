@@ -16,7 +16,7 @@ describe('auth0/client/browserish/credential', function() {
     };
     
     
-    describe('success, with Google Authenticator device', function() {
+    describe('success', function() {
       var guardian;
       var mfaClient = {
         httpClient: { post: function(){} }

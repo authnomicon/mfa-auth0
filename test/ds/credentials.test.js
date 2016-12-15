@@ -130,7 +130,7 @@ describe('auth0/ds/credentials', function() {
           expect(credentials).to.have.length(0);
         });
         
-      }); // user with Google Authenticator
+      }); // user without authenticators
       
     }); // #list
     

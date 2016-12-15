@@ -21,11 +21,7 @@ BrowserishClient.prototype.enroll = function(userID, cb) {
       if (!txn.enrollmentTxId) {
         return cb(new AlreadyEnrolledError());
       }
-      
-      // TODO:
-      console.log(err);
-      console.log(txn);
-      //return cb(null, txn.transactionToken);
+      return cb(null, txn);
     });
   });
 }
