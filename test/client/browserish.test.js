@@ -303,6 +303,58 @@ describe('auth0/client/browserish', function() {
         });
       }); // a valid one-time password
       
+      describe('a valid one-time password, using an enrollment access token', function() {
+        var guardian;
+        var mfaClient = {
+          httpClient: { post: function(){} }
+        };
+        
+        
+        before(function() {
+          getCredential = sinon.stub().yields(null, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl');
+          
+          sinon.stub(mfaClient.httpClient, 'post').yields(null, {});
+          guardian = sinon.stub().returns(mfaClient);
+        });
+        
+        after(function() {
+          mfaClient.httpClient.post.restore();
+        });
+        
+        before(function(done) {
+          var factory = $require('../../xom/client/browserish', { 'auth0-guardian-js': guardian });
+        
+          var client = factory(getCredential);
+          client.verifyOTP('auth0|00xx00x0000x00x0000x0000', '123456', { accessToken: 'eyJ0eXAx.eyJzdWIx.aOSBJGPl' }, function(_err) {
+            if (_err) { return done(_err); }
+            done();
+          });
+        });
+        
+        it('should not get authorization credential', function() {
+          expect(getCredential.callCount).to.equal(0);
+        });
+        
+        it('should construct MFA API client', function() {
+          expect(guardian).to.have.been.calledOnce;
+          var call = guardian.getCall(0);
+          expect(call.args[0]).to.deep.equal({
+            serviceUrl: 'https://hansonhq.guardian.auth0.com',
+            requestToken: 'eyJ0eXAx.eyJzdWIx.aOSBJGPl'
+          });
+        });
+        
+        it('should request MFA API to verify one-time password', function() {
+          expect(mfaClient.httpClient.post).to.have.been.calledOnce;
+          var call = mfaClient.httpClient.post.getCall(0);
+          expect(call.args[0]).to.equal('/api/verify-otp');
+          expect(call.args[2]).to.deep.equal({
+            type: 'manual_input',
+            code: '123456'
+          });
+        });
+      }); // a valid one-time password, using an enrollment access token
+      
       describe('an invalid one-time password', function() {
         var guardian;
         var mfaClient = {
