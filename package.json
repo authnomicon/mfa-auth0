@@ -1,0 +1,40 @@
+{
+  "name": "nodex-login-mfa-auth0",
+  "version": "0.0.0",
+  "description": "",
+  "author": {
+    "name": "Jared Hanson",
+    "email": "jaredhanson@gmail.com",
+    "url": "http://jaredhanson.net/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/authnomicon/nodex-login-mfa-auth0.git"
+  },
+  "bugs": {
+    "url": "http://github.com/authnomicon/nodex-login-mfa-auth0/issues"
+  },
+  "license": "MIT",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    }
+  ],
+  "main": "./index.js",
+  "dependencies": {
+    "auth0-guardian-js": "^0.2.5",
+    "body-parser": "^1.15.2",
+    "request": "^2.79.0"
+  },
+  "devDependencies": {
+    "make-node": "^0.3.0",
+    "mocha": "^2.0.0",
+    "chai": "^3.0.0",
+    "sinon": "^1.17.0",
+    "proxyquire": "^1.7.10"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/mocha test/*.test.js"
+  }
+}
