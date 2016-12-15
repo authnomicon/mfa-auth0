@@ -57,7 +57,7 @@ describe('auth0/ds/credentials', function() {
           });
         });
       
-        it('should call id.map', function() {
+        it('should map user identifier', function() {
           expect(idmap).to.have.been.calledOnce;
           var call = idmap.getCall(0);
           expect(call.args[0]).to.deep.equal({
@@ -66,7 +66,7 @@ describe('auth0/ds/credentials', function() {
           });
         });
         
-        it('should call client.users.getEnrollments', function() {
+        it('should request enrollments from Management API', function() {
           expect(client.users.getEnrollments).to.have.been.calledOnce;
           var call = client.users.getEnrollments.getCall(0);
           expect(call.args[0]).to.deep.equal({
@@ -74,7 +74,7 @@ describe('auth0/ds/credentials', function() {
           });
         });
         
-        it('should yield credentials', function() {
+        it('should yield authenticators', function() {
           expect(credentials).to.be.an('array');
           expect(credentials).to.have.length(1);
           expect(credentials[0]).to.deep.equal({
@@ -85,9 +85,56 @@ describe('auth0/ds/credentials', function() {
         
       }); // user with Google Authenticator
       
+      describe('user without authenticators', function() {
+        var credentials;
+        
+        before(function() {
+          var enrollments = [];
+          
+          sinon.stub(client.users, 'getEnrollments').yields(null, enrollments);
+          idmap = sinon.stub().yields(null, 'auth0|00xx00x0000x00x0000x0000');
+        });
+      
+        after(function() {
+          client.users.getEnrollments.restore();
+        });
+        
+        before(function(done) {
+          var directory = factory(idmap, client);
+          directory.list({ id: '1', username: 'johndoe' }, function(_err, _credentials) {
+            if (_err) { return done(_err); }
+            credentials = _credentials;
+            done();
+          });
+        });
+      
+        it('should map user identifier', function() {
+          expect(idmap).to.have.been.calledOnce;
+          var call = idmap.getCall(0);
+          expect(call.args[0]).to.deep.equal({
+            id: '1',
+            username: 'johndoe'
+          });
+        });
+        
+        it('should request enrollments from Management API', function() {
+          expect(client.users.getEnrollments).to.have.been.calledOnce;
+          var call = client.users.getEnrollments.getCall(0);
+          expect(call.args[0]).to.deep.equal({
+            id: 'auth0|00xx00x0000x00x0000x0000'
+          });
+        });
+        
+        it('should yield authenticators', function() {
+          expect(credentials).to.be.an('array');
+          expect(credentials).to.have.length(0);
+        });
+        
+      }); // user with Google Authenticator
+      
     }); // #list
     
-    describe.only('#revoke', function() {
+    describe('#revoke', function() {
     
       describe('success', function() {
         before(function() {

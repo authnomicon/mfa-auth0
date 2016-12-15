@@ -16,7 +16,7 @@ describe('auth0/client/browserish', function() {
     
     describe('#enroll', function() {
       
-      describe.only('already enrolled with Google Authenticator', function() {
+      describe('already enrolled with Google Authenticator', function() {
         var guardian;
         var mfaClient = {
           httpClient: { post: function(){} }
