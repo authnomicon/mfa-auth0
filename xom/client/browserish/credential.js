@@ -3,7 +3,12 @@ exports = module.exports = function(client) {
   var guardian = require('auth0-guardian-js');
   
   
-  return function getCredential(userID, cb) {
+  return function getCredential(userID, type, cb) {
+    if (typeof type == 'function') {
+      cb = type;
+      type = undefined;
+    }
+    
     // https://auth0.com/docs/api/management/v2#!/Guardian/post_ticket
     var data = {
       user_id: userID,
@@ -12,6 +17,10 @@ exports = module.exports = function(client) {
     
     client.guardian.enrollmentTickets.create(data, function(err, ticket) {
       if (err) { return cb(err); }
+      
+      if (type == 'ticket') {
+        return cb(null, ticket.ticket_id);
+      }
       
       var mfaClient = guardian({
         serviceUrl: 'https://hansonhq.guardian.auth0.com',
