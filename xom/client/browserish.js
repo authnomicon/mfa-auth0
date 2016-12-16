@@ -26,6 +26,24 @@ BrowserishClient.prototype.enroll = function(userID, cb) {
   });
 }
 
+BrowserishClient.prototype.enrollViaSMS = function(deviceID, phone, txid, cb) {
+  var client = guardian({
+    serviceUrl: 'https://hansonhq.guardian.auth0.com',
+    requestToken: txid
+  });
+  
+  // https://github.com/auth0/auth0-mfa-api/wiki/API-Design#post-apidevice-accountsidsms-enroll
+  var data = {
+    phone_number: phone
+  };
+  client.httpClient.post('/api/device-accounts/' + deviceID + '/sms-enroll', client.credentials, data, function(err, out) {
+    if (err) {
+      return cb(err);
+    }
+    return cb(null);
+  });
+};
+
 BrowserishClient.prototype.sendPush = function(userID, deviceID, cb) {
   this._getCredential(userID, { stateTransport: 'polling' }, function(err, token) {
     if (err) { return cb(err); }
@@ -35,13 +53,34 @@ BrowserishClient.prototype.sendPush = function(userID, deviceID, cb) {
       requestToken: token
     });
     
+    // TODO: Implement an immediate error, if SMS only, passing the token so
+    //       sms can be attempted
+    
     // https://github.com/auth0/auth0-mfa-api/wiki/API-Design#post-apisend-push-notification
     client.httpClient.post('/api/send-push-notification', client.credentials, null, function(err, out) {
       if (err) {
         return cb(err);
       }
+      return cb(null, token);
+    });
+  });
+};
+
+BrowserishClient.prototype.sendSMS = function(userID, deviceID, cb) {
+  this._getCredential(userID, { stateTransport: 'polling' }, function(err, token) {
+    if (err) { return cb(err); }
+    
+    var client = guardian({
+      serviceUrl: 'https://hansonhq.guardian.auth0.com',
+      requestToken: token
+    });
+    
+    // https://github.com/auth0/auth0-mfa-api/wiki/API-Design#post-apisend-sms
+    client.httpClient.post('/api/send-sms', client.credentials, null, function(err, out) {
+      if (err) {
+        return cb(err);
+      }
       
-      // TODO: Parse result and return something...
       return cb(null, token);
     });
   });

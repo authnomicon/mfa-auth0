@@ -4,6 +4,7 @@ exports = module.exports = {
   'challenge': require('./xom/challenge'),
   'makecredential': require('./xom/makecredential'),
   'ds/credentials': require('./xom/ds/credentials'),
+  'oob/verify': require('./xom/oob/verify'),
   'otp/verify': require('./xom/otp/verify')
 };
 
