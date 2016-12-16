@@ -29,11 +29,7 @@ describe('auth0/challenge', function() {
       var params;
       
       before(function() {
-        // TODO: What does this look like?
-        var result = {
-        };
-        
-        sinon.stub(client, 'sendPush').yields(null, result);
+        sinon.stub(client, 'sendPush').yields(null, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl');
         idmap = sinon.stub().yields(null, 'auth0|00xx00x0000x00x0000x0000');
       });
     
@@ -66,9 +62,9 @@ describe('auth0/challenge', function() {
         expect(call.args[1]).to.equal('dev_xxxXxxX0XXXxXx0X');
       });
       
-      it.skip('should yield parameters', function() {
+      it('should yield parameters', function() {
         expect(params.type).to.equal('oob');
-        expect(params.txid).to.equal('0a0zz000-aaaa-0aa0-a000-00a0aaa00a0a');
+        expect(params.transactionID).to.equal('eyJ0eXAi.eyJzdWIi.aOSBJGPl');
       });
     }); // an out-of-band authenticator
     
