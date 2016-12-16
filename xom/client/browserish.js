@@ -42,7 +42,7 @@ BrowserishClient.prototype.sendPush = function(userID, deviceID, cb) {
       }
       
       // TODO: Parse result and return something...
-      return cb();
+      return cb(null, token);
     });
     
   });

@@ -264,6 +264,64 @@ describe('auth0/client/browserish', function() {
     
     describe('#sendPush', function() {
       
+      describe('success', function() {
+        var guardian;
+        var mfaClient = {
+          httpClient: { post: function(){} }
+        };
+        
+        
+        var transactionToken;
+        
+        before(function() {
+          getCredential = sinon.stub().yields(null, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl');
+          
+          sinon.stub(mfaClient.httpClient, 'post').yields(null, {});
+          guardian = sinon.stub().returns(mfaClient);
+        });
+        
+        after(function() {
+          mfaClient.httpClient.post.restore();
+        });
+        
+        before(function(done) {
+          var factory = $require('../../xom/client/browserish', { 'auth0-guardian-js': guardian });
+        
+          var client = factory(getCredential);
+          client.sendPush('auth0|00xx00x0000x00x0000x0000', 'dev_xxxXxxX0XXXxXx0X', function(_err, _token) {
+            if (_err) { return done(_err); }
+            transactionToken = _token;
+            done();
+          });
+        });
+        
+        it('should get authorization credential', function() {
+          expect(getCredential).to.have.been.calledOnce;
+          var call = getCredential.getCall(0);
+          expect(call.args[0]).to.equal('auth0|00xx00x0000x00x0000x0000');
+        });
+        
+        it('should construct MFA API client', function() {
+          expect(guardian).to.have.been.calledOnce;
+          var call = guardian.getCall(0);
+          expect(call.args[0]).to.deep.equal({
+            serviceUrl: 'https://hansonhq.guardian.auth0.com',
+            requestToken: 'eyJ0eXAi.eyJzdWIi.aOSBJGPl'
+          });
+        });
+        
+        it('should request MFA API to send push notification', function() {
+          expect(mfaClient.httpClient.post).to.have.been.calledOnce;
+          var call = mfaClient.httpClient.post.getCall(0);
+          expect(call.args[0]).to.equal('/api/send-push-notification');
+          expect(call.args[2]).to.equal(null);
+        });
+        
+        it('should yield transaction token', function() {
+          expect(transactionToken).to.equal('eyJ0eXAi.eyJzdWIi.aOSBJGPl');
+        });
+      }); // success
+      
       describe('failure cause by push notifications not being configured', function() {
         var guardian;
         var mfaClient = {
