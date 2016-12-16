@@ -28,6 +28,66 @@ describe('auth0/ds/credentials', function() {
     
     describe('#list', function() {
       
+      describe('user with Auth0 Guardian', function() {
+        var credentials;
+        
+        before(function() {
+          var enrollments = [ {
+            id: 'dev_xxxXxxX0XXXxXx0X',
+            status: 'confirmed',
+            type: 'pn',
+            name: 'John’s iPhone 7',
+            phone_number: null,
+            identifier: '0000000X-000X-00X0-0X00-00X000XX000X',
+            enrolled_at: '2016-12-15T23:43:48.724Z',
+            last_auth: '2016-12-16T00:44:51.084Z'
+          } ];
+          
+          sinon.stub(client.users, 'getEnrollments').yields(null, enrollments);
+          idmap = sinon.stub().yields(null, 'auth0|00xx00x0000x00x0000x0000');
+        });
+      
+        after(function() {
+          client.users.getEnrollments.restore();
+        });
+        
+        before(function(done) {
+          var directory = factory(idmap, client);
+          directory.list({ id: '1', username: 'johndoe' }, function(_err, _credentials) {
+            if (_err) { return done(_err); }
+            credentials = _credentials;
+            done();
+          });
+        });
+      
+        it('should map user identifier', function() {
+          expect(idmap).to.have.been.calledOnce;
+          var call = idmap.getCall(0);
+          expect(call.args[0]).to.deep.equal({
+            id: '1',
+            username: 'johndoe'
+          });
+        });
+        
+        it('should request enrollments from Management API', function() {
+          expect(client.users.getEnrollments).to.have.been.calledOnce;
+          var call = client.users.getEnrollments.getCall(0);
+          expect(call.args[0]).to.deep.equal({
+            id: 'auth0|00xx00x0000x00x0000x0000'
+          });
+        });
+        
+        // TODO: Set the methods correctly
+        it.skip('should yield authenticators', function() {
+          expect(credentials).to.be.an('array');
+          expect(credentials).to.have.length(1);
+          expect(credentials[0]).to.deep.equal({
+            id: 'dev_xxxXxxX0XXXxXx0X',
+            methods: [ 'otp' ]
+          });
+        });
+      }); // user with Auth0 Guardian
+      
       describe('user with Google Authenticator', function() {
         var credentials;
         
@@ -84,7 +144,65 @@ describe('auth0/ds/credentials', function() {
         });
       }); // user with Google Authenticator
       
-      describe('user with pending Google Authenticator enrollment', function() {
+      describe('user with SMS', function() {
+        var credentials;
+        
+        before(function() {
+          var enrollments = [ {
+            id: 'dev_xxxXxxX0XXXxXx0X',
+            status: 'confirmed',
+            type: 'sms',
+            phone_number: 'XXXXXXXX1234',
+            enrolled_at: '2016-12-16T20:01:54.565Z',
+            last_auth: '2016-12-16T20:01:54.564Z'
+          } ];
+          
+          sinon.stub(client.users, 'getEnrollments').yields(null, enrollments);
+          idmap = sinon.stub().yields(null, 'auth0|00xx00x0000x00x0000x0000');
+        });
+      
+        after(function() {
+          client.users.getEnrollments.restore();
+        });
+        
+        before(function(done) {
+          var directory = factory(idmap, client);
+          directory.list({ id: '1', username: 'johndoe' }, function(_err, _credentials) {
+            if (_err) { return done(_err); }
+            credentials = _credentials;
+            done();
+          });
+        });
+      
+        it('should map user identifier', function() {
+          expect(idmap).to.have.been.calledOnce;
+          var call = idmap.getCall(0);
+          expect(call.args[0]).to.deep.equal({
+            id: '1',
+            username: 'johndoe'
+          });
+        });
+        
+        it('should request enrollments from Management API', function() {
+          expect(client.users.getEnrollments).to.have.been.calledOnce;
+          var call = client.users.getEnrollments.getCall(0);
+          expect(call.args[0]).to.deep.equal({
+            id: 'auth0|00xx00x0000x00x0000x0000'
+          });
+        });
+        
+        // TODO: Make this correct
+        it.skip('should yield authenticators', function() {
+          expect(credentials).to.be.an('array');
+          expect(credentials).to.have.length(1);
+          expect(credentials[0]).to.deep.equal({
+            id: 'dev_xxxXxxX0XXXxXx0X',
+            methods: [ 'otp' ]
+          });
+        });
+      }); // user with SMS
+      
+      describe('user with pending enrollment', function() {
         var credentials;
         
         before(function() {
@@ -139,7 +257,7 @@ describe('auth0/ds/credentials', function() {
           });
         });
         
-      }); // user with pending Google Authenticator enrollment
+      }); // user with pending enrollment
       
       describe('user without authenticators', function() {
         var credentials;
