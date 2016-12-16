@@ -27,7 +27,7 @@ BrowserishClient.prototype.enroll = function(userID, cb) {
 }
 
 BrowserishClient.prototype.sendPush = function(userID, deviceID, cb) {
-  this._getCredential(userID, function(err, token) {
+  this._getCredential(userID, { stateTransport: 'polling' }, function(err, token) {
     if (err) { return cb(err); }
     
     var client = guardian({
@@ -44,7 +44,20 @@ BrowserishClient.prototype.sendPush = function(userID, deviceID, cb) {
       // TODO: Parse result and return something...
       return cb(null, token);
     });
-    
+  });
+};
+
+BrowserishClient.prototype.transactionState = function(txid, cb) {
+  var client = guardian({
+    serviceUrl: 'https://hansonhq.guardian.auth0.com',
+    requestToken: txid
+  });
+  
+  client.httpClient.post('/api/transaction-state', client.credentials, null, function(err, txn) {
+    if (err) {
+      return cb(err);
+    }
+    return cb(null, txn);
   });
 };
 

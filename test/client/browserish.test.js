@@ -299,6 +299,9 @@ describe('auth0/client/browserish', function() {
           expect(getCredential).to.have.been.calledOnce;
           var call = getCredential.getCall(0);
           expect(call.args[0]).to.equal('auth0|00xx00x0000x00x0000x0000');
+          expect(call.args[1]).to.deep.equal({
+            stateTransport: 'polling'
+          });
         });
         
         it('should construct MFA API client', function() {
@@ -387,6 +390,70 @@ describe('auth0/client/browserish', function() {
       }); // failure cause by push notifications not being configured
       
     }); // #sendPush
+    
+    describe('#transactionState', function() {
+      
+      describe('success', function() {
+        var guardian;
+        var mfaClient = {
+          httpClient: { post: function(){} }
+        };
+        
+        
+        var txn;
+        
+        before(function() {
+          var txn = { id: 'txn_xXxXXXXxXX0XX0XxxxXxXxxx0x0XXX',
+            state: 'pending',
+            enrollment: 
+             { id: 'dev_xxxXxxX0XXXxXx0X',
+               name: 'John’s iPhone 7',
+               identifier: '0000000X-000X-00X0-0X00-00X000XX000X',
+               phoneNumber: 'null',
+               methods: [ 'push', 'otp' ],
+               availableMethods: [ 'push', 'otp' ] } };
+          
+          sinon.stub(mfaClient.httpClient, 'post').yields(null, txn);
+          guardian = sinon.stub().returns(mfaClient);
+        });
+        
+        after(function() {
+          mfaClient.httpClient.post.restore();
+        });
+        
+        before(function(done) {
+          var factory = $require('../../xom/client/browserish', { 'auth0-guardian-js': guardian });
+        
+          var client = factory(getCredential);
+          client.transactionState('eyJ0eXAi.eyJzdWIi.aOSBJGPl', function(_err, _txn) {
+            if (_err) { return done(_err); }
+            txn = _txn;
+            done();
+          });
+        });
+        
+        it('should construct MFA API client', function() {
+          expect(guardian).to.have.been.calledOnce;
+          var call = guardian.getCall(0);
+          expect(call.args[0]).to.deep.equal({
+            serviceUrl: 'https://hansonhq.guardian.auth0.com',
+            requestToken: 'eyJ0eXAi.eyJzdWIi.aOSBJGPl'
+          });
+        });
+        
+        it('should request MFA API to send push notification', function() {
+          expect(mfaClient.httpClient.post).to.have.been.calledOnce;
+          var call = mfaClient.httpClient.post.getCall(0);
+          expect(call.args[0]).to.equal('/api/transaction-state');
+          expect(call.args[2]).to.equal(null);
+        });
+        
+        it('should yield transaction', function() {
+          expect(txn.id).to.equal('txn_xXxXXXXxXX0XX0XxxxXxXxxx0x0XXX');
+        });
+      }); // success
+      
+    }); // #transactionState
     
     describe('#verifyOTP', function() {
       
