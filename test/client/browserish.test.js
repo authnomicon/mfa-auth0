@@ -262,6 +262,55 @@ describe('auth0/client/browserish', function() {
       
     }); // #enroll
     
+    describe('#enrollViaSMS', function() {
+      
+      describe('accepted', function() {
+        var guardian;
+        var mfaClient = {
+          httpClient: { post: function(){} }
+        };
+        
+        
+        before(function() {
+          sinon.stub(mfaClient.httpClient, 'post').yields(null, { phoneNumber: 'XXXXXXXX1234' });
+          guardian = sinon.stub().returns(mfaClient);
+        });
+        
+        after(function() {
+          mfaClient.httpClient.post.restore();
+        });
+        
+        before(function(done) {
+          var factory = $require('../../xom/client/browserish', { 'auth0-guardian-js': guardian });
+        
+          var client = factory(getCredential);
+          client.enrollViaSMS('dev_xxxXxxX0XXXxXx0X', '+18885551234', 'eyJ0eXAi.eyJzdWIi.aOSBJGPl', function(_err) {
+            if (_err) { return done(_err); }
+            done();
+          });
+        });
+        
+        it('should construct MFA API client', function() {
+          expect(guardian).to.have.been.calledOnce;
+          var call = guardian.getCall(0);
+          expect(call.args[0]).to.deep.equal({
+            serviceUrl: 'https://hansonhq.guardian.auth0.com',
+            requestToken: 'eyJ0eXAi.eyJzdWIi.aOSBJGPl'
+          });
+        });
+        
+        it('should request MFA API to send verification code via SMS', function() {
+          expect(mfaClient.httpClient.post).to.have.been.calledOnce;
+          var call = mfaClient.httpClient.post.getCall(0);
+          expect(call.args[0]).to.equal('/api/device-accounts/dev_xxxXxxX0XXXxXx0X/sms-enroll');
+          expect(call.args[2]).to.deep.equal({
+            phone_number: '+18885551234'
+          });
+        });
+      }); // accepted
+      
+    }); // #enrollViaSMS
+    
     describe('#sendPush', function() {
       
       describe('success', function() {
