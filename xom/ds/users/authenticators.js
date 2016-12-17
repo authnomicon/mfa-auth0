@@ -1,6 +1,6 @@
 exports = module.exports = function(idmap, client) {
   // Load modules.
-  var Directory = require('../../lib/creds/directory');
+  var Directory = require('../../../lib/creds/directory');
   
   var directory = new Directory(client, idmap);
   return directory;
@@ -9,11 +9,11 @@ exports = module.exports = function(idmap, client) {
 // TODO: Rename this to pip/users/credentials
 
 exports['@implements'] = [
-  'http://schemas.authnomicon.org/js/login/mfa/CredentialDirectory',
-  'http://schemas.authnomicon.org/js/login/mfa/opt/auth0/CredentialDirectory'
+  'http://schemas.authnomicon.org/js/login/mfa/UserAuthenticatorsDirectory',
+  'http://schemas.authnomicon.org/js/login/mfa/opt/auth0/UserAuthenticatorsDirectory'
 ];
 exports['@singleton'] = true;
 exports['@require'] = [
-  '../idm/map',
+  '../../idm/map',
   'http://schemas.authnomicon.org/js/opt/auth0/mgmt/v2/Client'
 ];

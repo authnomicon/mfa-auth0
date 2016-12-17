@@ -2,7 +2,7 @@ exports = module.exports = {
   'client': require('./xom/client'),
   'challenge': require('./xom/challenge'),
   'makecredential': require('./xom/makecredential'),
-  'ds/credentials': require('./xom/ds/credentials'),
+  'ds/users/authenticators': require('./xom/ds/users/authenticators'),
   'oob/verify': require('./xom/oob/verify'),
   'otp/verify': require('./xom/otp/verify')
 };
