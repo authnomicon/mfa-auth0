@@ -3,7 +3,7 @@ var AlreadyEnrolledError = require('auth0-guardian-js/lib/errors/already_enrolle
 
 
 function BrowserishClient(options, getCredential) {
-  this._domain = options.domain;
+  this._serviceURL = options.serviceURL;
   this._getCredential = getCredential;
 }
 

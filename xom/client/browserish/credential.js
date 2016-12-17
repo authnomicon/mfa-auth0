@@ -30,13 +30,12 @@ exports = module.exports = function(client) {
         ticket: ticket.ticket_id
       });
       
-      
+      // https://github.com/auth0/auth0-mfa-api/wiki/API-Design#post-apistart-flow
       var data = null;
       if (options.stateTransport) {
         data = { state_transport: options.stateTransport };
       }
       
-      // https://github.com/auth0/auth0-mfa-api/wiki/API-Design#post-apistart-flow
       mfaClient.httpClient.post('/api/start-flow', mfaClient.credentials, data, function(err, txn) {
         return cb(null, txn.transactionToken);
       });
