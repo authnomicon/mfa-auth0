@@ -25,16 +25,16 @@ UserAuthenticators.prototype.list = function(user, options, cb) {
         authenticator = {};
         authenticator.id = enrollment.id;
         switch (enrollment.type) {
-        case 'authenticator':
-          authenticator.methods = [ 'otp' ];
-          break;
         case 'pn':
-          authenticator.methods = [ 'oob' ];
-          authenticator.channels = [ 'push' ];
+          authenticator.type = [ 'oob', 'otp' ];
+          authenticator.channels = [ 'pn' ];
           break;
         case 'sms':
-          authenticator.methods = [ 'oob' ];
+          authenticator.type = 'oob';
           authenticator.channels = [ 'sms' ];
+          break;
+        case 'authenticator':
+          authenticator.type = 'otp';
           break;
         default:
           continue;

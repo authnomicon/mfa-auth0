@@ -82,22 +82,23 @@ describe('ds/users/authenticators', function() {
           expect(authenticators).to.have.length(1);
           expect(authenticators[0]).to.deep.equal({
             id: 'dev_xxxXxxX0XXXxXx0X',
-            methods: [ 'oob' ],
-            channels: [ 'push' ]
+            type: [ 'oob', 'otp' ],
+            channels: [ 'pn' ]
           });
         });
       }); // user with Auth0 Guardian
       
-      describe('user with Google Authenticator', function() {
-        var credentials;
+      describe('user with SMS', function() {
+        var authenticators;
         
         before(function() {
           var enrollments = [ {
             id: 'dev_xxxXxxX0XXXxXx0X',
             status: 'confirmed',
-            type: 'authenticator',
-            enrolled_at: '2016-12-14T02:24:32.306Z',
-            last_auth: '2016-12-14T02:26:59.776Z'
+            type: 'sms',
+            phone_number: 'XXXXXXXX1234',
+            enrolled_at: '2016-12-16T20:01:54.565Z',
+            last_auth: '2016-12-16T20:01:54.564Z'
           } ];
           
           sinon.stub(client.users, 'getEnrollments').yields(null, enrollments);
@@ -110,9 +111,9 @@ describe('ds/users/authenticators', function() {
         
         before(function(done) {
           var directory = factory(idmap, client);
-          directory.list({ id: '1', username: 'johndoe' }, function(_err, _credentials) {
+          directory.list({ id: '1', username: 'johndoe' }, function(_err, _authenticators) {
             if (_err) { return done(_err); }
-            credentials = _credentials;
+            authenticators = _authenticators;
             done();
           });
         });
@@ -135,26 +136,26 @@ describe('ds/users/authenticators', function() {
         });
         
         it('should yield authenticators', function() {
-          expect(credentials).to.be.an('array');
-          expect(credentials).to.have.length(1);
-          expect(credentials[0]).to.deep.equal({
+          expect(authenticators).to.be.an('array');
+          expect(authenticators).to.have.length(1);
+          expect(authenticators[0]).to.deep.equal({
             id: 'dev_xxxXxxX0XXXxXx0X',
-            methods: [ 'otp' ]
+            type: 'oob',
+            channels: [ 'sms' ]
           });
         });
-      }); // user with Google Authenticator
+      }); // user with SMS
       
-      describe('user with SMS', function() {
-        var credentials;
+      describe('user with Google Authenticator', function() {
+        var authenticators;
         
         before(function() {
           var enrollments = [ {
             id: 'dev_xxxXxxX0XXXxXx0X',
             status: 'confirmed',
-            type: 'sms',
-            phone_number: 'XXXXXXXX1234',
-            enrolled_at: '2016-12-16T20:01:54.565Z',
-            last_auth: '2016-12-16T20:01:54.564Z'
+            type: 'authenticator',
+            enrolled_at: '2016-12-14T02:24:32.306Z',
+            last_auth: '2016-12-14T02:26:59.776Z'
           } ];
           
           sinon.stub(client.users, 'getEnrollments').yields(null, enrollments);
@@ -167,9 +168,9 @@ describe('ds/users/authenticators', function() {
         
         before(function(done) {
           var directory = factory(idmap, client);
-          directory.list({ id: '1', username: 'johndoe' }, function(_err, _credentials) {
+          directory.list({ id: '1', username: 'johndoe' }, function(_err, _authenticators) {
             if (_err) { return done(_err); }
-            credentials = _credentials;
+            authenticators = _authenticators;
             done();
           });
         });
@@ -191,19 +192,18 @@ describe('ds/users/authenticators', function() {
           });
         });
         
-        // TODO: Make this correct
-        it.skip('should yield authenticators', function() {
-          expect(credentials).to.be.an('array');
-          expect(credentials).to.have.length(1);
-          expect(credentials[0]).to.deep.equal({
+        it('should yield authenticators', function() {
+          expect(authenticators).to.be.an('array');
+          expect(authenticators).to.have.length(1);
+          expect(authenticators[0]).to.deep.equal({
             id: 'dev_xxxXxxX0XXXxXx0X',
-            methods: [ 'otp' ]
+            type: 'otp'
           });
         });
-      }); // user with SMS
+      }); // user with Google Authenticator
       
       describe('user with pending enrollment', function() {
-        var credentials;
+        var authenticators;
         
         before(function() {
           var enrollments = [ {
@@ -223,9 +223,9 @@ describe('ds/users/authenticators', function() {
         
         before(function(done) {
           var directory = factory(idmap, client);
-          directory.list({ id: '1', username: 'johndoe' }, function(_err, _credentials) {
+          directory.list({ id: '1', username: 'johndoe' }, function(_err, _authenticators) {
             if (_err) { return done(_err); }
-            credentials = _credentials;
+            authenticators = _authenticators;
             done();
           });
         });
@@ -249,9 +249,9 @@ describe('ds/users/authenticators', function() {
         
         // TODO: Parse pending athenticators correctly
         it.skip('should yield authenticators', function() {
-          expect(credentials).to.be.an('array');
-          expect(credentials).to.have.length(1);
-          expect(credentials[0]).to.deep.equal({
+          expect(authenticators).to.be.an('array');
+          expect(authenticators).to.have.length(1);
+          expect(authenticators[0]).to.deep.equal({
             id: 'dev_xxxXxxX0XXXxXx0X',
             methods: [ 'otp' ]
           });
@@ -260,7 +260,7 @@ describe('ds/users/authenticators', function() {
       }); // user with pending enrollment
       
       describe('user without authenticators', function() {
-        var credentials;
+        var authenticators;
         
         before(function() {
           var enrollments = [];
@@ -275,9 +275,9 @@ describe('ds/users/authenticators', function() {
         
         before(function(done) {
           var directory = factory(idmap, client);
-          directory.list({ id: '1', username: 'johndoe' }, function(_err, _credentials) {
+          directory.list({ id: '1', username: 'johndoe' }, function(_err, _authenticators) {
             if (_err) { return done(_err); }
-            credentials = _credentials;
+            authenticators = _authenticators;
             done();
           });
         });
@@ -300,8 +300,8 @@ describe('ds/users/authenticators', function() {
         });
         
         it('should yield authenticators', function() {
-          expect(credentials).to.be.an('array');
-          expect(credentials).to.have.length(0);
+          expect(authenticators).to.be.an('array');
+          expect(authenticators).to.have.length(0);
         });
         
       }); // user without authenticators
