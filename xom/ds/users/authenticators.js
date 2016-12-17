@@ -60,8 +60,6 @@ exports = module.exports = function(idmap, client) {
   return directory;
 };
 
-// TODO: Rename this to pip/users/credentials
-
 exports['@implements'] = [
   'http://schemas.authnomicon.org/js/login/mfa/UserAuthenticatorsDirectory',
   'http://schemas.authnomicon.org/js/login/mfa/opt/auth0/UserAuthenticatorsDirectory'
