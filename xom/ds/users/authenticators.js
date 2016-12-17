@@ -16,20 +16,34 @@ UserAuthenticators.prototype.list = function(user, options, cb) {
     if (err) { return cb(err); }
     
     self._client.users.getEnrollments({ id: userID }, function(err, enrollments) {
-      var devices = enrollments, device;
-      var credentials = [], credential;
-      var i, len;
+      var authenticators = []
+        , authenticator, enrollment
+        , i, len;
     
-      for (i = 0, len = devices.length; i < len; ++i) {
-        device = devices[i];
-        credential = {};
-        credential.id = device.id;
-        credential.methods = [ 'otp' ];
+      for (i = 0, len = enrollments.length; i < len; ++i) {
+        enrollment = enrollments[i];
+        authenticator = {};
+        authenticator.id = enrollment.id;
+        switch (enrollment.type) {
+        case 'authenticator':
+          authenticator.methods = [ 'otp' ];
+          break;
+        case 'pn':
+          authenticator.methods = [ 'oob' ];
+          authenticator.channels = [ 'push' ];
+          break;
+        case 'sms':
+          authenticator.methods = [ 'oob' ];
+          authenticator.channels = [ 'sms' ];
+          break;
+        default:
+          continue;
+        }
         
-        credentials.push(credential);
+        authenticators.push(authenticator);
       }
       
-      return cb(null, credentials);
+      return cb(null, authenticators);
     });
   });
 };

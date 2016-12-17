@@ -3,7 +3,7 @@ var sinon = require('sinon');
 var factory = require('../../../xom/ds/users/authenticators');
 
 
-describe('auth0/ds/credentials', function() {
+describe('ds/users/authenticators', function() {
   
   it('should export factory function', function() {
     expect(factory).to.be.a('function');
@@ -16,7 +16,7 @@ describe('auth0/ds/credentials', function() {
     expect(factory['@singleton']).to.equal(true);
   });
   
-  describe('Directory', function() {
+  describe('UserAuthenticators', function() {
     var directory;
     
     var client = {
@@ -29,7 +29,7 @@ describe('auth0/ds/credentials', function() {
     describe('#list', function() {
       
       describe('user with Auth0 Guardian', function() {
-        var credentials;
+        var authenticators;
         
         before(function() {
           var enrollments = [ {
@@ -53,9 +53,9 @@ describe('auth0/ds/credentials', function() {
         
         before(function(done) {
           var directory = factory(idmap, client);
-          directory.list({ id: '1', username: 'johndoe' }, function(_err, _credentials) {
+          directory.list({ id: '1', username: 'johndoe' }, function(_err, _authenticators) {
             if (_err) { return done(_err); }
-            credentials = _credentials;
+            authenticators = _authenticators;
             done();
           });
         });
@@ -77,13 +77,13 @@ describe('auth0/ds/credentials', function() {
           });
         });
         
-        // TODO: Set the methods correctly
-        it.skip('should yield authenticators', function() {
-          expect(credentials).to.be.an('array');
-          expect(credentials).to.have.length(1);
-          expect(credentials[0]).to.deep.equal({
+        it('should yield authenticators', function() {
+          expect(authenticators).to.be.an('array');
+          expect(authenticators).to.have.length(1);
+          expect(authenticators[0]).to.deep.equal({
             id: 'dev_xxxXxxX0XXXxXx0X',
-            methods: [ 'otp' ]
+            methods: [ 'oob' ],
+            channels: [ 'push' ]
           });
         });
       }); // user with Auth0 Guardian
