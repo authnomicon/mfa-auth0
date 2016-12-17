@@ -15,5 +15,5 @@ exports['@implements'] = [
 exports['@singleton'] = true;
 exports['@require'] = [
   '../idm/map',
-  'http://schemas.authnomicon.org/js/opt/auth0/mgmt/Client'
+  'http://schemas.authnomicon.org/js/opt/auth0/mgmt/v2/Client'
 ];

@@ -1,5 +1,5 @@
 exports = module.exports = function(container) {
-  return container.create('./id');
+  return container.create('./new/id');
 };
 
 exports['@singleton'] = true;

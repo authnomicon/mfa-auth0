@@ -45,5 +45,5 @@ exports = module.exports = function(client) {
 };
 
 exports['@require'] = [
-  'http://schemas.authnomicon.org/js/opt/auth0/mgmt/Client'
+  'http://schemas.authnomicon.org/js/opt/auth0/mgmt/v2/Client'
 ];
