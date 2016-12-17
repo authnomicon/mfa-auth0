@@ -32,6 +32,9 @@ UserAuthenticators.prototype.list = function(user, options, cb) {
         case 'sms':
           authenticator.type = 'oob';
           authenticator.channels = [ 'sms' ];
+          authenticator.confirmation = 'primary';
+          //authenticator.confirmation = 'secondary';
+          //authenticator.confirmation = 'compare';
           break;
         case 'authenticator':
           authenticator.type = 'otp';

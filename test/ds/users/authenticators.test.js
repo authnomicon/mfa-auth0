@@ -141,7 +141,8 @@ describe('ds/users/authenticators', function() {
           expect(authenticators[0]).to.deep.equal({
             id: 'dev_xxxXxxX0XXXxXx0X',
             type: 'oob',
-            channels: [ 'sms' ]
+            channels: [ 'sms' ],
+            confirmation: 'primary'
           });
         });
       }); // user with SMS
