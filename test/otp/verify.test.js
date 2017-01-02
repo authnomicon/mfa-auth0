@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var factory = require('../../xom/otp/verify');
+var factory = require('../../lib/otp/verify');
 
 
 describe('auth0/otp/verify', function() {

@@ -21,7 +21,7 @@
       "url": "http://opensource.org/licenses/MIT"
     }
   ],
-  "main": "./index.js",
+  "main": "./lib",
   "dependencies": {
     "auth0-guardian-js": "^0.2.5",
     "body-parser": "^1.15.2",

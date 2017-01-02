@@ -1,7 +1,7 @@
 var $require = require('proxyquire');
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var factory = require('../../xom/client/browserish');
+var factory = require('../../lib/client/browserish');
 
 
 describe('auth0/client/browserish', function() {
@@ -58,7 +58,7 @@ describe('auth0/client/browserish', function() {
         });
         
         before(function(done) {
-          var factory = $require('../../xom/client/browserish', { 'auth0-guardian-js': guardian });
+          var factory = $require('../../lib/client/browserish', { 'auth0-guardian-js': guardian });
         
           var client = factory(getCredential);
           client.enroll('auth0|00xx00x0000x00x0000x0000', function(_err, _txn) {
@@ -139,7 +139,7 @@ describe('auth0/client/browserish', function() {
         });
         
         before(function(done) {
-          var factory = $require('../../xom/client/browserish', { 'auth0-guardian-js': guardian });
+          var factory = $require('../../lib/client/browserish', { 'auth0-guardian-js': guardian });
         
           var client = factory(getCredential);
           client.enroll('auth0|00xx00x0000x00x0000x0000', function(_err) {
@@ -222,7 +222,7 @@ describe('auth0/client/browserish', function() {
         });
         
         before(function(done) {
-          var factory = $require('../../xom/client/browserish', { 'auth0-guardian-js': guardian });
+          var factory = $require('../../lib/client/browserish', { 'auth0-guardian-js': guardian });
         
           var client = factory(getCredential);
           client.enroll('auth0|00xx00x0000x00x0000x0000', function(_err) {
@@ -304,7 +304,7 @@ describe('auth0/client/browserish', function() {
         });
         
         before(function(done) {
-          var factory = $require('../../xom/client/browserish', { 'auth0-guardian-js': guardian });
+          var factory = $require('../../lib/client/browserish', { 'auth0-guardian-js': guardian });
         
           var client = factory(getCredential);
           client.enroll('auth0|00xx00x0000x00x0000x0000', function(_err) {
@@ -363,7 +363,7 @@ describe('auth0/client/browserish', function() {
         });
         
         before(function(done) {
-          var factory = $require('../../xom/client/browserish', { 'auth0-guardian-js': guardian });
+          var factory = $require('../../lib/client/browserish', { 'auth0-guardian-js': guardian });
         
           var client = factory(getCredential);
           client.enrollViaSMS('dev_xxxXxxX0XXXxXx0X', '+18885551234', 'eyJ0eXAi.eyJzdWIi.aOSBJGPl', function(_err) {
@@ -416,7 +416,7 @@ describe('auth0/client/browserish', function() {
         });
         
         before(function(done) {
-          var factory = $require('../../xom/client/browserish', { 'auth0-guardian-js': guardian });
+          var factory = $require('../../lib/client/browserish', { 'auth0-guardian-js': guardian });
         
           var client = factory(getCredential);
           client.sendPush('auth0|00xx00x0000x00x0000x0000', 'dev_xxxXxxX0XXXxXx0X', function(_err, _token) {
@@ -482,7 +482,7 @@ describe('auth0/client/browserish', function() {
         });
         
         before(function(done) {
-          var factory = $require('../../xom/client/browserish', { 'auth0-guardian-js': guardian });
+          var factory = $require('../../lib/client/browserish', { 'auth0-guardian-js': guardian });
         
           var client = factory(getCredential);
           client.sendPush('auth0|00xx00x0000x00x0000x0000', 'dev_xxxXxxX0XXXxXx0X', function(_err) {
@@ -545,7 +545,7 @@ describe('auth0/client/browserish', function() {
         });
         
         before(function(done) {
-          var factory = $require('../../xom/client/browserish', { 'auth0-guardian-js': guardian });
+          var factory = $require('../../lib/client/browserish', { 'auth0-guardian-js': guardian });
         
           var client = factory(getCredential);
           client.sendSMS('auth0|00xx00x0000x00x0000x0000', 'dev_xxxXxxX0XXXxXx0X', function(_err, _token) {
@@ -618,7 +618,7 @@ describe('auth0/client/browserish', function() {
         });
         
         before(function(done) {
-          var factory = $require('../../xom/client/browserish', { 'auth0-guardian-js': guardian });
+          var factory = $require('../../lib/client/browserish', { 'auth0-guardian-js': guardian });
         
           var client = factory(getCredential);
           client.transactionState('eyJ0eXAi.eyJzdWIi.aOSBJGPl', function(_err, _txn) {
@@ -672,7 +672,7 @@ describe('auth0/client/browserish', function() {
         });
         
         before(function(done) {
-          var factory = $require('../../xom/client/browserish', { 'auth0-guardian-js': guardian });
+          var factory = $require('../../lib/client/browserish', { 'auth0-guardian-js': guardian });
         
           var client = factory(getCredential);
           client.verifyOTP('auth0|00xx00x0000x00x0000x0000', '123456', function(_err) {
@@ -726,7 +726,7 @@ describe('auth0/client/browserish', function() {
         });
         
         before(function(done) {
-          var factory = $require('../../xom/client/browserish', { 'auth0-guardian-js': guardian });
+          var factory = $require('../../lib/client/browserish', { 'auth0-guardian-js': guardian });
         
           var client = factory(getCredential);
           client.verifyOTP('auth0|00xx00x0000x00x0000x0000', '123456', { accessToken: 'eyJ0eXAx.eyJzdWIx.aOSBJGPl' }, function(_err) {
@@ -785,7 +785,7 @@ describe('auth0/client/browserish', function() {
         });
         
         before(function(done) {
-          var factory = $require('../../xom/client/browserish', { 'auth0-guardian-js': guardian });
+          var factory = $require('../../lib/client/browserish', { 'auth0-guardian-js': guardian });
         
           var client = factory(getCredential);
           client.verifyOTP('auth0|00xx00x0000x00x0000x0000', '123456', function(_err) {

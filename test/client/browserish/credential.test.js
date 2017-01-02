@@ -1,7 +1,7 @@
 var $require = require('proxyquire');
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var factory = require('../../../xom/client/browserish/credential');
+var factory = require('../../../lib/client/browserish/credential');
 
 
 describe('auth0/client/browserish/credential', function() {
@@ -66,7 +66,7 @@ describe('auth0/client/browserish/credential', function() {
       });
       
       before(function(done) {
-        var factory = $require('../../../xom/client/browserish/credential', { 'auth0-guardian-js': guardian });
+        var factory = $require('../../../lib/client/browserish/credential', { 'auth0-guardian-js': guardian });
         
         var getCredential = factory(client);
         getCredential('auth0|00xx00x0000x00x0000x0000', function(_err, _credential) {
@@ -156,7 +156,7 @@ describe('auth0/client/browserish/credential', function() {
       });
       
       before(function(done) {
-        var factory = $require('../../../xom/client/browserish/credential', { 'auth0-guardian-js': guardian });
+        var factory = $require('../../../lib/client/browserish/credential', { 'auth0-guardian-js': guardian });
         
         var getCredential = factory(client);
         getCredential('auth0|00xx00x0000x00x0000x0000', { stateTransport: 'polling' }, function(_err, _credential) {
@@ -248,7 +248,7 @@ describe('auth0/client/browserish/credential', function() {
       });
       
       before(function(done) {
-        var factory = $require('../../../xom/client/browserish/credential', { 'auth0-guardian-js': guardian });
+        var factory = $require('../../../lib/client/browserish/credential', { 'auth0-guardian-js': guardian });
         
         var getCredential = factory(client);
         getCredential('auth0|00xx00x0000x00x0000x0000', 'ticket', function(_err, _credential) {
