@@ -83,7 +83,8 @@ describe('ds/users/authenticators', function() {
           expect(authenticators[0]).to.deep.equal({
             id: 'dev_xxxXxxX0XXXxXx0X',
             type: [ 'oob', 'otp' ],
-            channels: [ 'pns' ]
+            channels: [ 'pns' ],
+            _userID: 'auth0|00xx00x0000x00x0000x0000'
           });
         });
       }); // user with Auth0 Guardian
@@ -144,7 +145,8 @@ describe('ds/users/authenticators', function() {
             channels: [ 'sms' ],
             confirmation: {
               channel: 'primary'
-            }
+            },
+            _userID: 'auth0|00xx00x0000x00x0000x0000'
           });
         });
       }); // user with SMS
@@ -200,7 +202,8 @@ describe('ds/users/authenticators', function() {
           expect(authenticators).to.have.length(1);
           expect(authenticators[0]).to.deep.equal({
             id: 'dev_xxxXxxX0XXXxXx0X',
-            type: 'otp'
+            type: 'otp',
+            _userID: 'auth0|00xx00x0000x00x0000x0000'
           });
         });
       }); // user with Google Authenticator
@@ -256,7 +259,8 @@ describe('ds/users/authenticators', function() {
           expect(authenticators).to.have.length(1);
           expect(authenticators[0]).to.deep.equal({
             id: 'dev_xxxXxxX0XXXxXx0X',
-            methods: [ 'otp' ]
+            methods: [ 'otp' ],
+            _userID: 'auth0|00xx00x0000x00x0000x0000'
           });
         });
         
