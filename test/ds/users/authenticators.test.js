@@ -16,7 +16,7 @@ describe('ds/users/authenticators', function() {
     expect(factory['@singleton']).to.equal(true);
   });
   
-  describe('UserAuthenticators', function() {
+  describe('UserAuthenticatorsDirectory', function() {
     var directory;
     
     var client = {
@@ -83,7 +83,7 @@ describe('ds/users/authenticators', function() {
           expect(authenticators[0]).to.deep.equal({
             id: 'dev_xxxXxxX0XXXxXx0X',
             type: [ 'oob', 'otp' ],
-            channels: [ 'pn' ]
+            channels: [ 'pns' ]
           });
         });
       }); // user with Auth0 Guardian
@@ -142,7 +142,9 @@ describe('ds/users/authenticators', function() {
             id: 'dev_xxxXxxX0XXXxXx0X',
             type: 'oob',
             channels: [ 'sms' ],
-            confirmation: 'primary'
+            confirmation: {
+              channel: 'primary'
+            }
           });
         });
       }); // user with SMS

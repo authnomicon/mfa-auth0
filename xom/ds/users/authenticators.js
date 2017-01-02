@@ -1,9 +1,9 @@
-function UserAuthenticators(client, idmap) {
+function UserAuthenticatorsDirectory(client, idmap) {
   this._client = client;
   this._idmap = idmap;
 }
 
-UserAuthenticators.prototype.list = function(user, options, cb) {
+UserAuthenticatorsDirectory.prototype.list = function(user, options, cb) {
   if (typeof options == 'function') {
     cb = options;
     options = undefined;
@@ -27,14 +27,14 @@ UserAuthenticators.prototype.list = function(user, options, cb) {
         switch (enrollment.type) {
         case 'pn':
           authenticator.type = [ 'oob', 'otp' ];
-          authenticator.channels = [ 'pn' ];
+          authenticator.channels = [ 'pns' ];
           break;
         case 'sms':
           authenticator.type = 'oob';
           authenticator.channels = [ 'sms' ];
-          authenticator.confirmation = 'primary';
-          //authenticator.confirmation = 'secondary';
-          //authenticator.confirmation = 'compare';
+          authenticator.confirmation = {
+            channel: 'primary'
+          }
           break;
         case 'authenticator':
           authenticator.type = 'otp';
@@ -51,7 +51,21 @@ UserAuthenticators.prototype.list = function(user, options, cb) {
   });
 };
 
-UserAuthenticators.prototype.revoke = function(user, authenticatorID, options, cb) {
+UserAuthenticatorsDirectory.prototype.get = function(user, aid, cb) {
+  this.list(user, function(err, authenticators) {
+    if (err) { return cb(err); }
+    
+    var i, len;
+    for (i = 0, len = authenticators.length; i < len; ++i) {
+      if (authenticators[i].id == aid) {
+        return cb(null, authenticators[i]);
+      }
+    }
+    return cb(null);
+  });
+};
+
+UserAuthenticatorsDirectory.prototype.revoke = function(user, authenticatorID, options, cb) {
   if (typeof options == 'function') {
     cb = options;
     options = undefined;
@@ -73,7 +87,7 @@ UserAuthenticators.prototype.revoke = function(user, authenticatorID, options, c
 
 
 exports = module.exports = function(idmap, client) {
-  var directory = new UserAuthenticators(client, idmap);
+  var directory = new UserAuthenticatorsDirectory(client, idmap);
   return directory;
 };
 
