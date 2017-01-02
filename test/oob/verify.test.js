@@ -51,7 +51,19 @@ describe('auth0/oob/verify', function() {
       
       before(function(done) {
         var verify = factory(client);
-        verify({ id: '1', username: 'johndoe' }, 'dev_xxxXxxX0XXXxXx0X', 'eyJ0eXAi.eyJzdWIi.aOSBJGPl', function(_err, _ok, _params) {
+        var authenticator = {
+          id: 'dev_xxxXxxX0XXXxXx0X',
+          type: [ 'oob', 'otp' ],
+          channels: [ 'pns' ],
+          _userID: 'auth0|00xx00x0000x00x0000x0000'
+        }
+        var opts = {
+          context: {
+            transactionID: 'eyJ0eXAi.eyJzdWIi.aOSBJGPl'
+          }
+        }
+        
+        verify(authenticator, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl', opts, function(_err, _ok, _params) {
           if (_err) { return done(_err); }
           ok = _ok;
           params = _params;
@@ -96,7 +108,19 @@ describe('auth0/oob/verify', function() {
       
       before(function(done) {
         var verify = factory(client);
-        verify({ id: '1', username: 'johndoe' }, 'dev_xxxXxxX0XXXxXx0X', 'eyJ0eXAi.eyJzdWIi.aOSBJGPl', function(_err, _ok, _params) {
+        var authenticator = {
+          id: 'dev_xxxXxxX0XXXxXx0X',
+          type: [ 'oob', 'otp' ],
+          channels: [ 'pns' ],
+          _userID: 'auth0|00xx00x0000x00x0000x0000'
+        }
+        var opts = {
+          context: {
+            transactionID: 'eyJ0eXAi.eyJzdWIi.aOSBJGPl'
+          }
+        }
+        
+        verify(authenticator, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl', opts, function(_err, _ok, _params) {
           if (_err) { return done(_err); }
           ok = _ok;
           params = _params;
@@ -141,7 +165,19 @@ describe('auth0/oob/verify', function() {
       
       before(function(done) {
         var verify = factory(client);
-        verify({ id: '1', username: 'johndoe' }, 'dev_xxxXxxX0XXXxXx0X', 'eyJ0eXAi.eyJzdWIi.aOSBJGPl', function(_err, _ok, _params) {
+        var authenticator = {
+          id: 'dev_xxxXxxX0XXXxXx0X',
+          type: [ 'oob', 'otp' ],
+          channels: [ 'pns' ],
+          _userID: 'auth0|00xx00x0000x00x0000x0000'
+        }
+        var opts = {
+          context: {
+            transactionID: 'eyJ0eXAi.eyJzdWIi.aOSBJGPl'
+          }
+        }
+        
+        verify(authenticator, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl', opts, function(_err, _ok, _params) {
           if (_err) { return done(_err); }
           ok = _ok;
           params = _params;
