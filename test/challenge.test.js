@@ -25,7 +25,7 @@ describe('auth0/challenge', function() {
     
   
     describe('an out-of-band authenticator', function() {
-      var params;
+      var params, context;
       
       before(function() {
         sinon.stub(client, 'sendPush').yields(null, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl');
@@ -44,9 +44,10 @@ describe('auth0/challenge', function() {
           _userID: 'auth0|00xx00x0000x00x0000x0000'
         }
         
-        challenge(authenticator, { type: 'oob' }, function(_err, _params) {
+        challenge(authenticator, { type: 'oob' }, function(_err, _params, _context) {
           if (_err) { return done(_err); }
           params = _params;
+          context = _context;
           done();
         });
       });
@@ -59,12 +60,15 @@ describe('auth0/challenge', function() {
       
       it('should yield parameters', function() {
         expect(params.type).to.equal('oob');
-        expect(params.transactionID).to.equal('eyJ0eXAi.eyJzdWIi.aOSBJGPl');
+      });
+      
+      it('should yield context', function() {
+        expect(context.transactionID).to.equal('eyJ0eXAi.eyJzdWIi.aOSBJGPl');
       });
     }); // an out-of-band authenticator
     
     describe('an OTP authenticator', function() {
-      var params;
+      var params, context;
       
       before(function() {
         // TODO: What does this look like?
@@ -87,9 +91,10 @@ describe('auth0/challenge', function() {
           _userID: 'auth0|00xx00x0000x00x0000x0000'
         }
         
-        challenge(authenticator, { type: 'otp' }, function(_err, _params) {
+        challenge(authenticator, { type: 'otp' }, function(_err, _params, _context) {
           if (_err) { return done(_err); }
           params = _params;
+          context = _context;
           done();
         });
       });
@@ -100,7 +105,10 @@ describe('auth0/challenge', function() {
       
       it.skip('should yield parameters', function() {
         expect(params.type).to.equal('oob');
-        expect(params.txid).to.equal('0a0zz000-aaaa-0aa0-a000-00a0aaa00a0a');
+      });
+      
+      it.skip('should yield context', function() {
+        expect(context.transactionID).to.equal('eyJ0eXAi.eyJzdWIi.aOSBJGPl');
       });
     }); // an OTP authenticator
     
