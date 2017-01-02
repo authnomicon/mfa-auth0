@@ -22,7 +22,6 @@ describe('auth0/otp/verify', function() {
     var client = {
       verifyOTP: function(){}
     };
-    var idmap;
     
     
     describe('a valid one-time password', function() {
@@ -30,7 +29,6 @@ describe('auth0/otp/verify', function() {
       
       before(function() {
         sinon.stub(client, 'verifyOTP').yields(null);
-        idmap = sinon.stub().yields(null, 'auth0|00xx00x0000x00x0000x0000');
       });
     
       after(function() {
@@ -38,20 +36,18 @@ describe('auth0/otp/verify', function() {
       });
       
       before(function(done) {
-        var verify = factory(idmap, client);
-        verify({ id: '1', username: 'johndoe' }, 'dev_xxxXxxX0XXXxXx0X', '123456', function(_err, _ok) {
+        var verify = factory(client);
+        var authenticator = {
+          id: 'dev_xxxXxxX0XXXxXx0X',
+          type: [ 'oob', 'otp' ],
+          channels: [ 'pns' ],
+          _userID: 'auth0|00xx00x0000x00x0000x0000'
+        }
+        
+        verify(authenticator, '123456', function(_err, _ok) {
           if (_err) { return done(_err); }
           ok = _ok;
           done();
-        });
-      });
-    
-      it('should map user identifier', function() {
-        expect(idmap).to.have.been.calledOnce;
-        var call = idmap.getCall(0);
-        expect(call.args[0]).to.deep.equal({
-          id: '1',
-          username: 'johndoe'
         });
       });
     
@@ -77,7 +73,6 @@ describe('auth0/otp/verify', function() {
         e.errorCode = 'invalid_otp';
         
         sinon.stub(client, 'verifyOTP').yields(e);
-        idmap = sinon.stub().yields(null, 'auth0|00xx00x0000x00x0000x0000');
       });
     
       after(function() {
@@ -85,20 +80,18 @@ describe('auth0/otp/verify', function() {
       });
       
       before(function(done) {
-        var verify = factory(idmap, client);
-        verify({ id: '1', username: 'johndoe' }, 'dev_xxxXxxX0XXXxXx0X', '123456', function(_err, _ok) {
+        var verify = factory(client);
+        var authenticator = {
+          id: 'dev_xxxXxxX0XXXxXx0X',
+          type: [ 'oob', 'otp' ],
+          channels: [ 'pns' ],
+          _userID: 'auth0|00xx00x0000x00x0000x0000'
+        }
+        
+        verify(authenticator, '123456', function(_err, _ok) {
           if (_err) { return done(_err); }
           ok = _ok;
           done();
-        });
-      });
-    
-      it('should map user identifier', function() {
-        expect(idmap).to.have.been.calledOnce;
-        var call = idmap.getCall(0);
-        expect(call.args[0]).to.deep.equal({
-          id: '1',
-          username: 'johndoe'
         });
       });
     
