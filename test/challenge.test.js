@@ -22,7 +22,6 @@ describe('auth0/challenge', function() {
     var client = {
       sendPush: function(){}
     };
-    var idmap;
     
   
     describe('an out-of-band authenticator', function() {
@@ -30,7 +29,6 @@ describe('auth0/challenge', function() {
       
       before(function() {
         sinon.stub(client, 'sendPush').yields(null, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl');
-        idmap = sinon.stub().yields(null, 'auth0|00xx00x0000x00x0000x0000');
       });
     
       after(function() {
@@ -38,20 +36,18 @@ describe('auth0/challenge', function() {
       });
       
       before(function(done) {
-        var challenge = factory(idmap, client);
-        challenge({ id: '1', username: 'johndoe' }, 'dev_xxxXxxX0XXXxXx0X', { type: 'oob' }, function(_err, _params) {
+        var challenge = factory(client);
+        var authenticator = {
+          id: 'dev_xxxXxxX0XXXxXx0X',
+          type: [ 'oob', 'otp' ],
+          channels: [ 'pns' ],
+          _userID: 'auth0|00xx00x0000x00x0000x0000'
+        }
+        
+        challenge(authenticator, { type: 'oob' }, function(_err, _params) {
           if (_err) { return done(_err); }
           params = _params;
           done();
-        });
-      });
-    
-      it('should map user identifier', function() {
-        expect(idmap).to.have.been.calledOnce;
-        var call = idmap.getCall(0);
-        expect(call.args[0]).to.deep.equal({
-          id: '1',
-          username: 'johndoe'
         });
       });
     
@@ -59,7 +55,6 @@ describe('auth0/challenge', function() {
         expect(client.sendPush).to.have.been.calledOnce;
         var call = client.sendPush.getCall(0);
         expect(call.args[0]).to.equal('auth0|00xx00x0000x00x0000x0000');
-        expect(call.args[1]).to.equal('dev_xxxXxxX0XXXxXx0X');
       });
       
       it('should yield parameters', function() {
@@ -77,7 +72,6 @@ describe('auth0/challenge', function() {
         };
         
         sinon.stub(client, 'sendPush').yields(null, result);
-        idmap = sinon.stub().yields(null, 'auth0|00xx00x0000x00x0000x0000');
       });
     
       after(function() {
@@ -85,16 +79,19 @@ describe('auth0/challenge', function() {
       });
       
       before(function(done) {
-        var challenge = factory(idmap, client);
-        challenge({ id: '1', username: 'johndoe' }, 'dev_xxxXxxX0XXXxXx0X', { type: 'otp' }, function(_err, _params) {
+        var challenge = factory(client);
+        var authenticator = {
+          id: 'dev_xxxXxxX0XXXxXx0X',
+          type: [ 'oob', 'otp' ],
+          channels: [ 'pns' ],
+          _userID: 'auth0|00xx00x0000x00x0000x0000'
+        }
+        
+        challenge(authenticator, { type: 'otp' }, function(_err, _params) {
           if (_err) { return done(_err); }
           params = _params;
           done();
         });
-      });
-    
-      it('should not map user identifier', function() {
-        expect(idmap.callCount).to.equal(0);
       });
     
       it('should not send push notification', function() {

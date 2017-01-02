@@ -419,7 +419,7 @@ describe('auth0/client/browserish', function() {
           var factory = $require('../../lib/client/browserish', { 'auth0-guardian-js': guardian });
         
           var client = factory(getCredential);
-          client.sendPush('auth0|00xx00x0000x00x0000x0000', 'dev_xxxXxxX0XXXxXx0X', function(_err, _token) {
+          client.sendPush('auth0|00xx00x0000x00x0000x0000', function(_err, _token) {
             if (_err) { return done(_err); }
             transactionToken = _token;
             done();
@@ -485,7 +485,7 @@ describe('auth0/client/browserish', function() {
           var factory = $require('../../lib/client/browserish', { 'auth0-guardian-js': guardian });
         
           var client = factory(getCredential);
-          client.sendPush('auth0|00xx00x0000x00x0000x0000', 'dev_xxxXxxX0XXXxXx0X', function(_err) {
+          client.sendPush('auth0|00xx00x0000x00x0000x0000', function(_err) {
             err = _err;
             done();
           });
@@ -548,7 +548,7 @@ describe('auth0/client/browserish', function() {
           var factory = $require('../../lib/client/browserish', { 'auth0-guardian-js': guardian });
         
           var client = factory(getCredential);
-          client.sendSMS('auth0|00xx00x0000x00x0000x0000', 'dev_xxxXxxX0XXXxXx0X', function(_err, _token) {
+          client.sendSMS('auth0|00xx00x0000x00x0000x0000', function(_err, _token) {
             if (_err) { return done(_err); }
             transactionToken = _token;
             done();
