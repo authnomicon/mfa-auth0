@@ -82,7 +82,7 @@ describe('ds/users/authenticators', function() {
           expect(authenticators).to.have.length(1);
           expect(authenticators[0]).to.deep.equal({
             id: 'dev_xxxXxxX0XXXxXx0X',
-            type: [ 'oob', 'otp' ],
+            type: [ 'oob', 'otp', 'lookup-secret' ],
             channels: [ 'pns' ],
             _userID: 'auth0|00xx00x0000x00x0000x0000'
           });
@@ -141,7 +141,7 @@ describe('ds/users/authenticators', function() {
           expect(authenticators).to.have.length(1);
           expect(authenticators[0]).to.deep.equal({
             id: 'dev_xxxXxxX0XXXxXx0X',
-            type: 'oob',
+            type: [ 'oob', 'lookup-secret' ],
             channels: [ 'sms' ],
             confirmation: {
               channel: 'primary'
@@ -202,7 +202,7 @@ describe('ds/users/authenticators', function() {
           expect(authenticators).to.have.length(1);
           expect(authenticators[0]).to.deep.equal({
             id: 'dev_xxxXxxX0XXXxXx0X',
-            type: 'otp',
+            type: [ 'otp', 'lookup-secret' ],
             _userID: 'auth0|00xx00x0000x00x0000x0000'
           });
         });
