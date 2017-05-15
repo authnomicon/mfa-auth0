@@ -1,5 +1,5 @@
 {
-  "name": "nodex-login-mfa-auth0",
+  "name": "@authnomicon/mfa-auth0",
   "version": "0.0.0",
   "description": "",
   "author": {
