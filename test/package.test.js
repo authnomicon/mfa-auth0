@@ -1,12 +1,23 @@
 var expect = require('chai').expect;
-var pkg = require('..');
 
 
 describe('nodex-login-mfa-auth0', function() {
   
-  it('should export manifest', function() {
-    expect(pkg).to.be.an('object');
-    expect(pkg['ds/users/authenticators']).to.be.a('function');
+  describe('package.json', function() {
+    var json = require('../package.json');
+    
+    it('should have assembly metadata', function() {
+      expect(json.assembly.namespace).to.equal('mfa/auth0');
+      
+      expect(json.assembly.components).to.have.length(9);
+      expect(json.assembly.components).to.include('oob/verify');
+    });
+  });
+  
+  it('should throw if required', function() {
+    expect(function() {
+      var pkg = require('..');
+    }).to.throw(Error).with.property('code', 'MODULE_NOT_FOUND');
   });
   
 });
