@@ -27,6 +27,7 @@
     "components": [
       "client",
       "challenge",
+      "register",
       "makecredential",
       "ds/users/authenticators",
       "lookup/verify",

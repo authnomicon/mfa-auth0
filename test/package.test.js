@@ -9,7 +9,7 @@ describe('nodex-login-mfa-auth0', function() {
     it('should have assembly metadata', function() {
       expect(json.assembly.namespace).to.equal('mfa/auth0');
       
-      expect(json.assembly.components).to.have.length(11);
+      expect(json.assembly.components).to.have.length(12);
       expect(json.assembly.components).to.include('oob/verify');
     });
   });
