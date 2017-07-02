@@ -28,6 +28,7 @@
       "client",
       "challenge",
       "register",
+      "confirm",
       "makecredential",
       "ds/users/authenticators",
       "lookup/verify",
