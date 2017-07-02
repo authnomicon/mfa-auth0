@@ -13,8 +13,8 @@ describe('auth0/register', function() {
   
   it('should be annotated', function() {
     expect(factory['@implements']).to.have.length(2);
-    expect(factory['@implements'][0]).to.equal('http://schemas.authnomicon.org/js/login/mfa/register');
-    expect(factory['@implements'][1]).to.equal('http://schemas.authnomicon.org/js/login/mfa/opt/auth0/register');
+    expect(factory['@implements'][0]).to.equal('http://schemas.authnomicon.org/js/login/mfa/associate');
+    expect(factory['@implements'][1]).to.equal('http://schemas.authnomicon.org/js/login/mfa/opt/auth0/associate');
     expect(factory['@singleton']).to.equal(true);
   });
   
