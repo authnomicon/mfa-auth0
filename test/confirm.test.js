@@ -43,7 +43,7 @@ describe('confirm', function() {
       before(function(done) {
         var confirm = factory(client);
         
-        confirm({ authenticatorID: 'dev_xxxXxxX0XXXxXx0X' }, function(_err, _params) {
+        confirm({ id: 'dev_xxxXxxX0XXXxXx0X' }, function(_err, _params) {
           if (_err) { return done(_err); }
           params = _params;
           done();
@@ -62,6 +62,47 @@ describe('confirm', function() {
         expect(params).to.equal(true);
       });
     }); // confirmed
+    
+    describe('pending', function() {
+      var params;
+      
+      before(function() {
+        var result = {
+          id: 'dev_xxxXxxX0XXXxXx0X',
+          status: 'confirmation_pending',
+          type: 'authenticator',
+          enrolled_at: null
+        };
+        
+        sinon.stub(client.guardian.enrollments, 'get').yields(null, result);
+      });
+    
+      after(function() {
+        client.guardian.enrollments.get.restore();
+      });
+      
+      before(function(done) {
+        var confirm = factory(client);
+        
+        confirm({ id: 'dev_xxxXxxX0XXXxXx0X' }, function(_err, _params) {
+          if (_err) { return done(_err); }
+          params = _params;
+          done();
+        });
+      });
+    
+      it('should perform authentication via Auth API', function() {
+        expect(client.guardian.enrollments.get).to.have.been.calledOnce;
+        var call = client.guardian.enrollments.get.getCall(0);
+        expect(call.args[0]).to.deep.equal({
+          id: 'dev_xxxXxxX0XXXxXx0X'
+        });
+      });
+      
+      it('should yield parameters', function() {
+        expect(params).to.equal(undefined);
+      });
+    }); // pending
     
   });
   
