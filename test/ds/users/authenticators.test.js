@@ -84,7 +84,7 @@ describe('ds/users/authenticators', function() {
             vendor: 'auth0',
             id: 'dev_xxxXxxX0XXXxXx0X',
             type: [ 'oob', 'otp', 'lookup-secret' ],
-            channels: [ 'pns' ],
+            channels: [ 'auth0' ],
             _userID: 'auth0|00xx00x0000x00x0000x0000'
           });
         });
