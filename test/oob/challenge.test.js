@@ -2,10 +2,10 @@
 
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var factory = require('../lib/challenge');
+var factory = require('../../lib/oob/challenge');
 
 
-describe('auth0/challenge', function() {
+describe('auth0/oob/challenge', function() {
   
   it('should export factory function', function() {
     expect(factory).to.be.a('function');
@@ -13,8 +13,8 @@ describe('auth0/challenge', function() {
   
   it('should be annotated', function() {
     expect(factory['@implements']).to.have.length(2);
-    expect(factory['@implements'][0]).to.equal('http://schemas.authnomicon.org/js/login/mfa/challenge');
-    expect(factory['@implements'][1]).to.equal('http://schemas.authnomicon.org/js/login/mfa/opt/auth0/challenge');
+    expect(factory['@implements'][0]).to.equal('http://schemas.authnomicon.org/js/login/mfa/oob/challenge');
+    expect(factory['@implements'][1]).to.equal('http://schemas.authnomicon.org/js/login/mfa/opt/auth0/oob/challenge');
     expect(factory['@singleton']).to.equal(true);
   });
   
@@ -24,7 +24,7 @@ describe('auth0/challenge', function() {
     };
     
   
-    describe('an out-of-band authenticator', function() {
+    describe('via push notification', function() {
       var params;
       
       before(function() {
@@ -61,47 +61,7 @@ describe('auth0/challenge', function() {
         expect(params.type).to.equal('oob');
         expect(params.transactionID).to.equal('eyJ0eXAi.eyJzdWIi.aOSBJGPl');
       });
-    }); // an out-of-band authenticator
-    
-    describe('an OTP authenticator', function() {
-      var params;
-      
-      before(function() {
-        // TODO: What does this look like?
-        var result = {
-        };
-        
-        sinon.stub(client, 'sendPush').yields(null, result);
-      });
-    
-      after(function() {
-        client.sendPush.restore();
-      });
-      
-      before(function(done) {
-        var challenge = factory(client);
-        var authenticator = {
-          id: 'dev_xxxXxxX0XXXxXx0X',
-          type: [ 'otp' ],
-          _userID: 'auth0|00xx00x0000x00x0000x0000'
-        }
-        
-        challenge(authenticator, function(_err, _params) {
-          if (_err) { return done(_err); }
-          params = _params;
-          done();
-        });
-      });
-    
-      it('should not send push notification', function() {
-        expect(client.sendPush.callCount).to.equal(0);
-      });
-      
-      it.skip('should yield parameters', function() {
-        expect(params.type).to.equal('oob');
-        expect(params.transactionID).to.equal('eyJ0eXAi.eyJzdWIi.aOSBJGPl');
-      });
-    }); // an OTP authenticator
+    }); // via push notification
     
   }); // challenge
   
