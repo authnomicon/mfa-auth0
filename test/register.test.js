@@ -25,8 +25,8 @@ describe('auth0/register', function() {
     var idmap;
     
     
-    describe.skip('something', function() {
-      var out;
+    describe('something', function() {
+      var params;
       
       before(function() {
         var txn = {
@@ -60,9 +60,9 @@ describe('auth0/register', function() {
       
       before(function(done) {
         var register = factory(idmap, client);
-        register(function(_err, _out) {
+        register({ id: '1', username: 'johndoe' }, function(_err, _params) {
           if (_err) { return done(_err); }
-          out = _out;
+          params = _params;
           done();
         });
       });
@@ -76,26 +76,24 @@ describe('auth0/register', function() {
         });
       });
       
-      /*
       it('should request enrollments from Management API', function() {
-        expect(client.users.getEnrollments).to.have.been.calledOnce;
-        var call = client.users.getEnrollments.getCall(0);
-        expect(call.args[0]).to.deep.equal({
-          id: 'auth0|00xx00x0000x00x0000x0000'
-        });
+        expect(client.enroll).to.have.been.calledOnce;
+        var call = client.enroll.getCall(0);
+        expect(call.args[0]).to.equal('auth0|00xx00x0000x00x0000x0000');
       });
       
-      it('should yield authenticators', function() {
-        expect(authenticators).to.be.an('array');
-        expect(authenticators).to.have.length(1);
-        expect(authenticators[0]).to.deep.equal({
-          id: 'dev_xxxXxxX0XXXxXx0X',
-          type: [ 'oob', 'otp', 'lookup-secret' ],
-          channels: [ 'pns' ],
-          _userID: 'auth0|00xx00x0000x00x0000x0000'
+      it('should yield parameters', function() {
+        expect(params).to.be.an('object');
+        expect(params).to.deep.equal({
+          type: 'oob',
+          alternateTypes: [ 'otp' ],
+          secret: 'XXXX0XXXXXXX0XXXXXXXXXXXXXXXX0XX',
+          barcodeURL: 'otpauth://totp/HansonHQ:foofoo?secret=XXXX0XXXXXXX0XXXXXXXXXXXXXXXX0XX&enrollment_tx_id=X0XXxxXX0xx00XXXxXxxXxxXxxx0XXx0&issuer=HansonHQ&id=dev_xxxXxxX0XXXxXx0X&base_url=https%3A%2F%2Fhansonhq.guardian.auth0.com&digits=6&counter=0&period=30',
+          context: {
+            id: 'dev_xxxXxxX0XXXxXx0X'
+          }
         });
       });
-      */
     }); // something
     
   });
