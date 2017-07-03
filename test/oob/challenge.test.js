@@ -58,7 +58,6 @@ describe('auth0/oob/challenge', function() {
       });
       
       it('should yield parameters', function() {
-        expect(params.type).to.equal('oob');
         expect(params.transactionID).to.equal('eyJ0eXAi.eyJzdWIi.aOSBJGPl');
       });
     }); // via push notification
