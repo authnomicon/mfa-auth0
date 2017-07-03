@@ -12,10 +12,8 @@ describe('auth0/oob/challenge', function() {
   });
   
   it('should be annotated', function() {
-    expect(factory['@implements']).to.have.length(2);
-    expect(factory['@implements'][0]).to.equal('http://schemas.authnomicon.org/js/login/mfa/oob/challenge');
-    expect(factory['@implements'][1]).to.equal('http://schemas.authnomicon.org/js/login/mfa/opt/auth0/oob/challenge');
-    expect(factory['@singleton']).to.equal(true);
+    expect(factory['@require']).to.have.length(1);
+    expect(factory['@require'][0]).to.equal('http://schemas.authnomicon.org/js/login/mfa/opt/auth0/Client');
   });
   
   describe('challenge', function() {
