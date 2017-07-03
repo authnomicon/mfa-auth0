@@ -57,13 +57,8 @@ describe('auth0/oob/verify', function() {
           channels: [ 'pns' ],
           _userID: 'auth0|00xx00x0000x00x0000x0000'
         }
-        var opts = {
-          context: {
-            transactionID: 'eyJ0eXAi.eyJzdWIi.aOSBJGPl'
-          }
-        }
         
-        verify(authenticator, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl', opts, function(_err, _ok, _params) {
+        verify(authenticator, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl', function(_err, _ok, _params) {
           if (_err) { return done(_err); }
           ok = _ok;
           params = _params;
@@ -114,13 +109,8 @@ describe('auth0/oob/verify', function() {
           channels: [ 'pns' ],
           _userID: 'auth0|00xx00x0000x00x0000x0000'
         }
-        var opts = {
-          context: {
-            transactionID: 'eyJ0eXAi.eyJzdWIi.aOSBJGPl'
-          }
-        }
         
-        verify(authenticator, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl', opts, function(_err, _ok, _params) {
+        verify(authenticator, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl', function(_err, _ok, _params) {
           if (_err) { return done(_err); }
           ok = _ok;
           params = _params;
@@ -171,13 +161,8 @@ describe('auth0/oob/verify', function() {
           channels: [ 'pns' ],
           _userID: 'auth0|00xx00x0000x00x0000x0000'
         }
-        var opts = {
-          context: {
-            transactionID: 'eyJ0eXAi.eyJzdWIi.aOSBJGPl'
-          }
-        }
         
-        verify(authenticator, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl', opts, function(_err, _ok, _params) {
+        verify(authenticator, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl', function(_err, _ok, _params) {
           if (_err) { return done(_err); }
           ok = _ok;
           params = _params;

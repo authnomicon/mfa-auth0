@@ -81,6 +81,7 @@ describe('ds/users/authenticators', function() {
           expect(authenticators).to.be.an('array');
           expect(authenticators).to.have.length(1);
           expect(authenticators[0]).to.deep.equal({
+            vendor: 'auth0',
             id: 'dev_xxxXxxX0XXXxXx0X',
             type: [ 'oob', 'otp', 'lookup-secret' ],
             channels: [ 'pns' ],
@@ -140,6 +141,7 @@ describe('ds/users/authenticators', function() {
           expect(authenticators).to.be.an('array');
           expect(authenticators).to.have.length(1);
           expect(authenticators[0]).to.deep.equal({
+            vendor: 'auth0',
             id: 'dev_xxxXxxX0XXXxXx0X',
             type: [ 'oob', 'lookup-secret' ],
             channels: [ 'sms' ],
@@ -201,6 +203,7 @@ describe('ds/users/authenticators', function() {
           expect(authenticators).to.be.an('array');
           expect(authenticators).to.have.length(1);
           expect(authenticators[0]).to.deep.equal({
+            vendor: 'auth0',
             id: 'dev_xxxXxxX0XXXxXx0X',
             type: [ 'otp', 'lookup-secret' ],
             _userID: 'auth0|00xx00x0000x00x0000x0000'
