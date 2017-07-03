@@ -44,7 +44,7 @@ describe('auth0/challenge', function() {
           _userID: 'auth0|00xx00x0000x00x0000x0000'
         }
         
-        challenge(authenticator, { type: 'oob' }, function(_err, _params) {
+        challenge(authenticator, function(_err, _params) {
           if (_err) { return done(_err); }
           params = _params;
           done();
@@ -82,12 +82,11 @@ describe('auth0/challenge', function() {
         var challenge = factory(client);
         var authenticator = {
           id: 'dev_xxxXxxX0XXXxXx0X',
-          type: [ 'oob', 'otp' ],
-          channels: [ 'pns' ],
+          type: [ 'otp' ],
           _userID: 'auth0|00xx00x0000x00x0000x0000'
         }
         
-        challenge(authenticator, { type: 'otp' }, function(_err, _params) {
+        challenge(authenticator, function(_err, _params) {
           if (_err) { return done(_err); }
           params = _params;
           done();
