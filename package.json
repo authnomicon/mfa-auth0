@@ -26,7 +26,6 @@
     "namespace": "mfa/auth0",
     "components": [
       "oob/channel",
-      "register",
       "confirm",
       "makecredential",
       "ds/users/authenticators",

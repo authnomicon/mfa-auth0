@@ -54,6 +54,6 @@ exports = module.exports = function(idmap, client) {
 };
 
 exports['@require'] = [
-  './idm/map',
+  '../idm/map',
   'http://schemas.modulate.io/js/opt/auth0/guardian/Client'
 ];

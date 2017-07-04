@@ -1,6 +1,7 @@
-exports = module.exports = function(challenge, verify) {
+exports = module.exports = function(associate, challenge, verify) {
   
   return {
+    associate: associate,
     challenge: challenge,
     verify: verify
   };
@@ -11,6 +12,7 @@ exports['@channel'] = 'auth0';
 
 exports['@singleton'] = true;
 exports['@require'] = [
+  './associate',
   './challenge',
   './verify'
 ];
