@@ -185,6 +185,54 @@ describe('auth0/oob/verify', function() {
       });
     }); // pending response to push notification
     
+    describe('completed authenticator binding', function() {
+      var ok, params;
+      
+      before(function() {
+        var result = {
+          id: 'dev_xxxXxxX0XXXxXx0X',
+          status: 'confirmed',
+          name: 'John’s iPhone 7',
+          identifier: '0000000X-000X-00X0-0X00-00X000XX000X',
+          phone_number: null,
+          type: 'pn',
+          enrolled_at: '2017-07-02T17:39:55.329Z'
+        };
+        
+        sinon.stub(mgmtClient.guardian.enrollments, 'get').yields(null, result);
+      });
+    
+      after(function() {
+        mgmtClient.guardian.enrollments.get.restore();
+      });
+      
+      before(function(done) {
+        var verify = factory(null, mgmtClient);
+        var authenticator = {
+          id: 'dev_xxxXxxX0XXXxXx0X',
+        }
+        
+        verify(authenticator, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl', { enroll: true }, function(_err, _ok, _params) {
+          if (_err) { return done(_err); }
+          ok = _ok;
+          params = _params;
+          done();
+        });
+      });
+    
+      it('should request transaction state from MFA API', function() {
+        expect(mgmtClient.guardian.enrollments.get).to.have.been.calledOnce;
+        var call = mgmtClient.guardian.enrollments.get.getCall(0);
+        expect(call.args[0]).to.deep.equal({
+          id: 'dev_xxxXxxX0XXXxXx0X'
+        });
+      });
+      
+      it('should yield ok', function() {
+        expect(ok).to.be.true;
+      });
+    }); // completed authenticator binding
+    
     describe('pending authenticator binding', function() {
       var ok, params;
       
