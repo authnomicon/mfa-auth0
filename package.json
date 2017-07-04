@@ -25,7 +25,6 @@
   "assembly": {
     "namespace": "mfa/auth0",
     "components": [
-      "client",
       "oob/channel",
       "register",
       "confirm",
