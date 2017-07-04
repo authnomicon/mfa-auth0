@@ -13,7 +13,7 @@ describe('auth0/oob/verify', function() {
   
   it('should be annotated', function() {
     expect(factory['@require']).to.have.length(1);
-    expect(factory['@require'][0]).to.equal('http://schemas.authnomicon.org/js/login/mfa/opt/auth0/Client');
+    expect(factory['@require'][0]).to.equal('http://schemas.modulate.io/js/opt/auth0/guardian/Client');
   });
   
   describe('verify', function() {
