@@ -21,6 +21,11 @@ describe('auth0/oob/verify', function() {
     var client = {
       transactionState: function(){}
     };
+    var mgmtClient = {
+      guardian: {
+        enrollments: { get: function(){} }
+      }
+    };
     
   
     describe('allowed response to push notification', function() {
@@ -179,6 +184,51 @@ describe('auth0/oob/verify', function() {
         expect(ok).to.be.undefined;
       });
     }); // pending response to push notification
+    
+    describe('pending authenticator binding', function() {
+      var ok, params;
+      
+      before(function() {
+        var result = {
+          id: 'dev_xxxXxxX0XXXxXx0X',
+          status: 'confirmation_pending',
+          type: 'authenticator',
+          enrolled_at: null
+        };
+        
+        sinon.stub(mgmtClient.guardian.enrollments, 'get').yields(null, result);
+      });
+    
+      after(function() {
+        mgmtClient.guardian.enrollments.get.restore();
+      });
+      
+      before(function(done) {
+        var verify = factory(null, mgmtClient);
+        var authenticator = {
+          id: 'dev_xxxXxxX0XXXxXx0X',
+        }
+        
+        verify(authenticator, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl', { enroll: true }, function(_err, _ok, _params) {
+          if (_err) { return done(_err); }
+          ok = _ok;
+          params = _params;
+          done();
+        });
+      });
+    
+      it('should request transaction state from MFA API', function() {
+        expect(mgmtClient.guardian.enrollments.get).to.have.been.calledOnce;
+        var call = mgmtClient.guardian.enrollments.get.getCall(0);
+        expect(call.args[0]).to.deep.equal({
+          id: 'dev_xxxXxxX0XXXxXx0X'
+        });
+      });
+      
+      it('should yield indeterminate ok', function() {
+        expect(ok).to.be.undefined;
+      });
+    }); // pending authenticator binding
     
   });
   

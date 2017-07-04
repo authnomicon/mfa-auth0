@@ -11,7 +11,7 @@ exports = module.exports = function(client, mgmtClient) {
     // TODO: Switch to vector of trust?
     if (options.enroll) {
       // TODO: Docuemnt why this is necessary.  Some 'transport not allowed' error.
-    
+      
       mgmtClient.guardian.enrollments.get({ id: authenticator.id }, function(err, enrollment) {
         if (err) { return cb(err); }
         
