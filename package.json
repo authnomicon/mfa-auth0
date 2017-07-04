@@ -33,11 +33,7 @@
       "ds/users/authenticators",
       "lookup/verify",
       "otp/verify",
-      "oob/verify",
-      "handlers/prompt",
-      "handlers/registration/prompt",
-      "handlers/registration/register",
-      "handlers/revocation"
+      "oob/verify"
     ]
   },
   "dependencies": {
