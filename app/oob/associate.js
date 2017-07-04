@@ -1,22 +1,16 @@
-
 exports = module.exports = function(idmap, client) {
   var enrollmentUriHelper = require('auth0-guardian-js/lib/utils/enrollment_uri_helper');
   
   
   return function associate(user, cb) {
-    console.log('REGISTER AUTH0...');
-    console.log(user);
-    
     idmap(user, function(err, userID) {
-      console.log('MAPPED USER: ' + userID);
-      
+      if (err) { return cb(err); }
       
       client.enroll(userID, function(err, txn) {
-        console.log(err);
-        console.log(txn);
+        if (err) { return cb(err); }
         
         // https://github.com/google/google-authenticator/wiki/Key-Uri-Format
-        var qrUrl = enrollmentUriHelper({
+        var barcodeURL = enrollmentUriHelper({
           issuerName: 'HansonHQ',
           accountLabel: 'foofoo',
           otpSecret: txn.deviceAccount.otpSecret, // secret
@@ -29,22 +23,14 @@ exports = module.exports = function(idmap, client) {
           enrollmentId: txn.deviceAccount.id
         });
         
-        console.log(qrUrl);
-        
-        var qrImage = 'https://chart.googleapis.com/chart?chs=166x166&chld=L|0&cht=qr&chl=' + encodeURIComponent(qrUrl);
-        console.log(qrImage)
-        
         var params = {
           type: 'oob',
           secret: txn.deviceAccount.otpSecret,
-          barcodeURL: qrUrl,
+          barcodeURL: barcodeURL,
           context: {
             id: txn.deviceAccount.id,
             transactionToken: txn.transactionToken
           }
-        }
-        if (txn.availableAuthenticationMethods.indexOf('otp') != -1) {
-          params.alternateTypes = [ 'otp' ];
         }
         
         return cb(null, params);

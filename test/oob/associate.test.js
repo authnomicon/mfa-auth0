@@ -5,7 +5,7 @@ var sinon = require('sinon');
 var factory = require('../../app/oob/associate');
 
 
-describe('auth0/register', function() {
+describe('auth0/oob/associate', function() {
   
   it('should export factory function', function() {
     expect(factory).to.be.a('function');
@@ -13,11 +13,11 @@ describe('auth0/register', function() {
   
   it('should be annotated', function() {
     expect(factory['@require']).to.have.length(2);
-    expect(factory['@require'][0]).to.equal('./idm/map');
+    expect(factory['@require'][0]).to.equal('../idm/map');
     expect(factory['@require'][1]).to.equal('http://schemas.modulate.io/js/opt/auth0/guardian/Client');
   });
   
-  describe('register', function() {
+  describe('associate', function() {
     var client = {
       enroll: function(){},
     };
@@ -58,8 +58,8 @@ describe('auth0/register', function() {
       });
       
       before(function(done) {
-        var register = factory(idmap, client);
-        register({ id: '1', username: 'johndoe' }, function(_err, _params) {
+        var associate = factory(idmap, client);
+        associate({ id: '1', username: 'johndoe' }, function(_err, _params) {
           if (_err) { return done(_err); }
           params = _params;
           done();
@@ -85,7 +85,6 @@ describe('auth0/register', function() {
         expect(params).to.be.an('object');
         expect(params).to.deep.equal({
           type: 'oob',
-          alternateTypes: [ 'otp' ],
           secret: 'XXXX0XXXXXXX0XXXXXXXXXXXXXXXX0XX',
           barcodeURL: 'otpauth://totp/HansonHQ:foofoo?secret=XXXX0XXXXXXX0XXXXXXXXXXXXXXXX0XX&enrollment_tx_id=X0XXxxXX0xx00XXXxXxxXxxXxxx0XXx0&issuer=HansonHQ&id=dev_xxxXxxX0XXXxXx0X&base_url=https%3A%2F%2Fhansonhq.guardian.auth0.com&digits=6&counter=0&period=30',
           context: {
