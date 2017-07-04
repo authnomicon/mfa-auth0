@@ -12,8 +12,9 @@ describe('auth0/oob/verify', function() {
   });
   
   it('should be annotated', function() {
-    expect(factory['@require']).to.have.length(1);
+    expect(factory['@require']).to.have.length(2);
     expect(factory['@require'][0]).to.equal('http://schemas.modulate.io/js/opt/auth0/guardian/Client');
+    expect(factory['@require'][1]).to.equal('http://schemas.modulate.io/js/opt/auth0/mgmt/v2/Client');
   });
   
   describe('verify', function() {
