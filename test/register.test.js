@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var factory = require('../lib/register');
+var factory = require('../app/register');
 
 
 describe('auth0/register', function() {

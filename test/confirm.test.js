@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var factory = require('../lib/confirm');
+var factory = require('../app/confirm');
 
 
 describe('confirm', function() {
