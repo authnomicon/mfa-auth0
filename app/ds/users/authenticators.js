@@ -24,11 +24,20 @@ UserAuthenticatorsDirectory.prototype.list = function(user, options, cb) {
     
       for (i = 0, len = enrollments.length; i < len; ++i) {
         enrollment = enrollments[i];
-        if (enrollment.status != 'confirmed') { continue; }
         
         authenticator = {};
         authenticator.vendor = 'auth0';
         authenticator.id = enrollment.id;
+        
+        switch (enrollment.status) {
+        case 'confirmation_pending':
+          authenticator.active = false;
+          break;
+        default: // confirmed
+          authenticator.active = true;
+          break;
+        }
+        
         switch (enrollment.type) {
         case 'pn':
           authenticator.type = [ 'oob', 'otp', 'lookup-secret' ];

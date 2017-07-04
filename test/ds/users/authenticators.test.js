@@ -83,6 +83,7 @@ describe('ds/users/authenticators', function() {
           expect(authenticators[0]).to.deep.equal({
             vendor: 'auth0',
             id: 'dev_xxxXxxX0XXXxXx0X',
+            active: true,
             type: [ 'oob', 'otp', 'lookup-secret' ],
             channels: [ 'auth0' ],
             _userID: 'auth0|00xx00x0000x00x0000x0000'
@@ -143,6 +144,7 @@ describe('ds/users/authenticators', function() {
           expect(authenticators[0]).to.deep.equal({
             vendor: 'auth0',
             id: 'dev_xxxXxxX0XXXxXx0X',
+            active: true,
             type: [ 'oob', 'lookup-secret' ],
             channels: [ 'sms' ],
             confirmation: {
@@ -205,6 +207,7 @@ describe('ds/users/authenticators', function() {
           expect(authenticators[0]).to.deep.equal({
             vendor: 'auth0',
             id: 'dev_xxxXxxX0XXXxXx0X',
+            active: true,
             type: [ 'otp', 'lookup-secret' ],
             _userID: 'auth0|00xx00x0000x00x0000x0000'
           });
@@ -256,10 +259,16 @@ describe('ds/users/authenticators', function() {
           });
         });
         
-        // TODO: Parse pending athenticators correctly
         it('should yield authenticators', function() {
           expect(authenticators).to.be.an('array');
-          expect(authenticators).to.have.length(0);
+          expect(authenticators).to.have.length(1);
+          expect(authenticators[0]).to.deep.equal({
+            vendor: 'auth0',
+            id: 'dev_xxxXxxX0XXXxXx0X',
+            active: false,
+            type: [ 'otp', 'lookup-secret' ],
+            _userID: 'auth0|00xx00x0000x00x0000x0000'
+          });
         });
         
       }); // user with pending enrollment

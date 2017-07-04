@@ -24,13 +24,11 @@ exports = module.exports = function(idmap, client) {
         });
         
         var params = {
-          type: 'oob',
-          secret: txn.deviceAccount.otpSecret,
+          // TODO: Only in OTP mode
+          //secret: txn.deviceAccount.otpSecret,
           barcodeURL: barcodeURL,
-          context: {
-            id: txn.deviceAccount.id,
-            transactionToken: txn.transactionToken
-          }
+          providedID: txn.deviceAccount.id,
+          transactionID: txn.transactionToken
         }
         
         return cb(null, params);
