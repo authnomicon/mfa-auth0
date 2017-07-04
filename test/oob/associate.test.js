@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var factory = require('../app/register');
+var factory = require('../../app/oob/associate');
 
 
 describe('auth0/register', function() {
@@ -12,10 +12,9 @@ describe('auth0/register', function() {
   });
   
   it('should be annotated', function() {
-    expect(factory['@implements']).to.have.length(2);
-    expect(factory['@implements'][0]).to.equal('http://schemas.authnomicon.org/js/login/mfa/associate');
-    expect(factory['@implements'][1]).to.equal('http://schemas.authnomicon.org/js/login/mfa/opt/auth0/associate');
-    expect(factory['@singleton']).to.equal(true);
+    expect(factory['@require']).to.have.length(2);
+    expect(factory['@require'][0]).to.equal('./idm/map');
+    expect(factory['@require'][1]).to.equal('http://schemas.modulate.io/js/opt/auth0/guardian/Client');
   });
   
   describe('register', function() {

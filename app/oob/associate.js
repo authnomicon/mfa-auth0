@@ -53,11 +53,6 @@ exports = module.exports = function(idmap, client) {
   };
 };
 
-exports['@implements'] = [
-  'http://schemas.authnomicon.org/js/login/mfa/associate',
-  'http://schemas.authnomicon.org/js/login/mfa/opt/auth0/associate'
-];
-exports['@singleton'] = true;
 exports['@require'] = [
   './idm/map',
   'http://schemas.modulate.io/js/opt/auth0/guardian/Client'
