@@ -1,5 +1,8 @@
 exports = module.exports = function(associate, challenge, verify) {
   
+  // https://en.wikipedia.org/wiki/Transaction_verification
+  // https://en.wikipedia.org/wiki/Transaction_authentication
+  
   return {
     associate: associate,
     challenge: challenge,
