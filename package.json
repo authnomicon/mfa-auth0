@@ -26,12 +26,10 @@
     "namespace": "mfa/auth0",
     "components": [
       "oob/channel",
-      "confirm",
       "makecredential",
       "ds/users/authenticators",
       "lookup/verify",
-      "otp/verify",
-      "oob/verify"
+      "otp/verify"
     ]
   },
   "dependencies": {
