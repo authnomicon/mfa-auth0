@@ -26,12 +26,15 @@ exports = module.exports = function(idmap, client) {
         var params = {
           // TODO: Only in OTP mode
           //secret: txn.deviceAccount.otpSecret,
-          barcodeURL: barcodeURL,
-          providedID: txn.deviceAccount.id,
-          transactionID: txn.transactionToken
+          barcodeURL: barcodeURL
         }
         
-        return cb(null, params);
+        // TODO: Add types to authnr
+        var authnr = {
+          id: txn.deviceAccount.id
+        }
+        
+        return cb(null, authnr, txn.transactionToken, params);
       });
     });
   };

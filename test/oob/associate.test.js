@@ -25,7 +25,7 @@ describe('auth0/oob/associate', function() {
     
     
     describe('something', function() {
-      var params;
+      var authnr, transactionID, params;
       
       before(function() {
         var txn = {
@@ -59,8 +59,10 @@ describe('auth0/oob/associate', function() {
       
       before(function(done) {
         var associate = factory(idmap, client);
-        associate({ id: '1', username: 'johndoe' }, function(_err, _params) {
+        associate({ id: '1', username: 'johndoe' }, function(_err, _authnr, _transactionID, _params) {
           if (_err) { return done(_err); }
+          authnr = _authnr;
+          transactionID = _transactionID;
           params = _params;
           done();
         });
@@ -81,12 +83,21 @@ describe('auth0/oob/associate', function() {
         expect(call.args[0]).to.equal('auth0|00xx00x0000x00x0000x0000');
       });
       
+      it('should yield auhtenticator', function() {
+        expect(authnr).to.be.an('object');
+        expect(authnr).to.deep.equal({
+          id: 'dev_xxxXxxX0XXXxXx0X',
+        });
+      });
+      
+      it('should yield transaction ID', function() {
+        expect(transactionID).to.equal('eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhdXRoMHwwMHh4MDB4MDAwMHgwMHgwMDAweDAwMDAiLCJleHAiOjE0ODE3NTgzMjMsImlzcyI6Imh0dHBzOi8vYWNtZS5ndWFyZGlhbi5hdXRoMC5jb20iLCJhdWQiOiJodHRwczovL2FjbWUuZ3VhcmRpYW4uYXV0aDAuY29tL2FwaSIsImF6cCI6ImJyb3dzZXIiLCJ0eGlkIjoidHhuX1hYeFhYWHgwMHhYMFh4eFh4WFhYMDB4eHhYMFh4MCJ9.aOSBJGPl6Wxn85i2wdYHREdR1u6X3aazAn0mn3zt042ayjp4MUZNE30gmFnZ2u511cfiQj-K5oIqsbLGlxXjxJRh_vZB7mlAhV7rzDD50pfw7NuaiXyMyE9Pd80eRA9K44IoZ5WP1EXVrMhjqvX_kYQ_fxuET7hKsNN-l_OL46c');
+      });
+      
       it('should yield parameters', function() {
         expect(params).to.be.an('object');
         expect(params).to.deep.equal({
           barcodeURL: 'otpauth://totp/HansonHQ:foofoo?secret=XXXX0XXXXXXX0XXXXXXXXXXXXXXXX0XX&enrollment_tx_id=X0XXxxXX0xx00XXXxXxxXxxXxxx0XXx0&issuer=HansonHQ&id=dev_xxxXxxX0XXXxXx0X&base_url=https%3A%2F%2Fhansonhq.guardian.auth0.com&digits=6&counter=0&period=30',
-          providedID: 'dev_xxxXxxX0XXXxXx0X',
-          transactionID: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhdXRoMHwwMHh4MDB4MDAwMHgwMHgwMDAweDAwMDAiLCJleHAiOjE0ODE3NTgzMjMsImlzcyI6Imh0dHBzOi8vYWNtZS5ndWFyZGlhbi5hdXRoMC5jb20iLCJhdWQiOiJodHRwczovL2FjbWUuZ3VhcmRpYW4uYXV0aDAuY29tL2FwaSIsImF6cCI6ImJyb3dzZXIiLCJ0eGlkIjoidHhuX1hYeFhYWHgwMHhYMFh4eFh4WFhYMDB4eHhYMFh4MCJ9.aOSBJGPl6Wxn85i2wdYHREdR1u6X3aazAn0mn3zt042ayjp4MUZNE30gmFnZ2u511cfiQj-K5oIqsbLGlxXjxJRh_vZB7mlAhV7rzDD50pfw7NuaiXyMyE9Pd80eRA9K44IoZ5WP1EXVrMhjqvX_kYQ_fxuET7hKsNN-l_OL46c'
         });
       });
     }); // something
