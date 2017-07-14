@@ -23,7 +23,7 @@ describe('auth0/oob/challenge', function() {
     
   
     describe('via push notification', function() {
-      var params;
+      var transactionID;
       
       before(function() {
         sinon.stub(client, 'sendPush').yields(null, 'eyJ0eXAi.eyJzdWIi.aOSBJGPl');
@@ -42,9 +42,9 @@ describe('auth0/oob/challenge', function() {
           _userID: 'auth0|00xx00x0000x00x0000x0000'
         }
         
-        challenge(authenticator, function(_err, _params) {
+        challenge(authenticator, function(_err, _txnID) {
           if (_err) { return done(_err); }
-          params = _params;
+          transactionID = _txnID;
           done();
         });
       });
@@ -55,8 +55,8 @@ describe('auth0/oob/challenge', function() {
         expect(call.args[0]).to.equal('auth0|00xx00x0000x00x0000x0000');
       });
       
-      it('should yield parameters', function() {
-        expect(params.transactionID).to.equal('eyJ0eXAi.eyJzdWIi.aOSBJGPl');
+      it('should yield transaction ID', function() {
+        expect(transactionID).to.equal('eyJ0eXAi.eyJzdWIi.aOSBJGPl');
       });
     }); // via push notification
     

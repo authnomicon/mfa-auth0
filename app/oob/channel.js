@@ -12,7 +12,6 @@ exports = module.exports = function(associate, challenge, verify) {
 
 exports['@implements'] = 'http://schemas.authnomicon.org/js/security/authentication/oob/Channel';
 exports['@channel'] = 'auth0';
-
 exports['@singleton'] = true;
 exports['@require'] = [
   './associate',

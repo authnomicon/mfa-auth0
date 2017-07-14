@@ -20,7 +20,7 @@ exports = module.exports = function(client) {
       
     client.sendPush(authenticator._userID, function(err, token) {
       if (err) { return cb(err); }
-      return cb(null, { transactionID: token });
+      return cb(null, token);
     });
   };
 };
