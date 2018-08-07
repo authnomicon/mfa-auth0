@@ -7,7 +7,7 @@ describe('nodex-login-mfa-auth0', function() {
     var json = require('../package.json');
     
     it('should have assembly metadata', function() {
-      expect(json.assembly.namespace).to.equal('mfa/auth0');
+      expect(json.assembly.namespace).to.equal('io.modulate/vnd/auth0');
       
       expect(json.assembly.components).to.have.length(4);
       expect(json.assembly.components).to.include('oob/channel');

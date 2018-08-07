@@ -23,8 +23,9 @@
   ],
   "main": "./app",
   "assembly": {
-    "namespace": "mfa/auth0",
+    "namespace": "io.modulate/vnd/auth0",
     "components": [
+      "authenticatorserviceprovider",
       "oob/channel",
       "ds/users/authenticators",
       "lookup/verify",
